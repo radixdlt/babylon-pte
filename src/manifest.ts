@@ -4,6 +4,10 @@ export class Manifest {
     constructor(instructions: string[]) {
         this.instructions = instructions;
     }
+
+    public toString(): string {
+        return this.instructions.join('\n');
+    }
 }
 
 export class ManifestBuilder {
@@ -19,97 +23,264 @@ export class ManifestBuilder {
         this.id_allocator = 512;
     }
 
-    takeFromWorktop(resourceAddress: string, bucket: string): ManifestBuilder {
-        this.instructions.push('TAKE_FROM_WORKTOP ResourceAddress("' + resourceAddress + '") Bucket("' + bucket + '");')
-        this.buckets.set(bucket, this.id_allocator++);
+    /**
+     * Take all resource of the given address from worktop.
+     * 
+     * @param resourceAddress The resource address
+     * @param bucketName The name of the new bucket
+     * @returns 
+     */
+    takeFromWorktop(resourceAddress: string, bucketName: string): ManifestBuilder {
+        this.instructions.push('TAKE_FROM_WORKTOP ResourceAddress("' + resourceAddress + '") Bucket("' + bucketName + '");')
+        this.buckets.set(bucketName, this.id_allocator++);
         return this;
     }
 
-    takeFromWorktopByAmount(amount: number, resourceAddress: string, bucket: string): ManifestBuilder {
-        this.instructions.push('TAKE_FROM_WORKTOP_BY_AMOUNT Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '") Bucket("' + bucket + '");')
-        this.buckets.set(bucket, this.id_allocator++);
+    /**
+     * Take some amount of the given address from worktop.
+     * 
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @param bucketName The name of the new bucket
+     * @returns 
+     */
+    takeFromWorktopByAmount(amount: number, resourceAddress: string, bucketName: string): ManifestBuilder {
+        this.instructions.push('TAKE_FROM_WORKTOP_BY_AMOUNT Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '") Bucket("' + bucketName + '");')
+        this.buckets.set(bucketName, this.id_allocator++);
         return this;
     }
 
-    takeFromWorktopByIds(nonFungibleIds: string[], resourceAddress: string, bucket: string): ManifestBuilder {
-        this.instructions.push('TAKE_FROM_WORKTOP_BY_IDS ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '") Bucket("' + bucket + '");')
-        this.buckets.set(bucket, this.id_allocator++);
+    /**
+     * Take some non-fungibles from worktop.
+     * 
+     * @param nonFungibleIds The non-fungible IDs
+     * @param resourceAddress The resource address
+     * @param bucketName The name of the new bucket
+     * @returns 
+     */
+    takeFromWorktopByIds(nonFungibleIds: string[], resourceAddress: string, bucketName: string): ManifestBuilder {
+        this.instructions.push('TAKE_FROM_WORKTOP_BY_IDS ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '") Bucket("' + bucketName + '");')
+        this.buckets.set(bucketName, this.id_allocator++);
         return this;
     }
 
-    returnToWorktop(bucket: string) {
-        this.instructions.push('RETURN_TO_WORKTOP Bucket("' + bucket + '");')
+    /**
+     * Returns a bucket to worktop.
+     * 
+     * @param bucketName The bucket name
+     * @returns
+     */
+    returnToWorktop(bucketName: string) {
+        this.instructions.push('RETURN_TO_WORKTOP Bucket("' + bucketName + '");')
         return this;
     }
 
+    /**
+     * Asserts worktop contains resource.
+     * 
+     * @param resourceAddress The resource address
+     * @returns
+     */
     assertWorktopContains(resourceAddress: string): ManifestBuilder {
         this.instructions.push('ASSERT_WORKTOP_CONTAINS ResourceAddress("' + resourceAddress + '");')
         return this;
     }
 
+    /**
+     * Asserts worktop contains some amount of resource.
+     * 
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @returns
+     */
     assertWorktopContainsByAmount(amount: number, resourceAddress: string): ManifestBuilder {
         this.instructions.push('ASSERT_WORKTOP_CONTAINS_BY_AMOUNT Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '");')
         return this;
     }
 
+    /**
+     * Asserts worktop contains some non-fungibles.
+     * 
+     * @param nonFungibleIds The non-fungible IDs
+     * @param resourceAddress The resource address
+     * @returns
+     */
     assertWorktopContainsByIds(nonFungibleIds: string[], resourceAddress: string): ManifestBuilder {
         this.instructions.push('ASSERT_WORKTOP_CONTAINS_BY_IDS ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '");')
         return this;
     }
 
-    popFromAuthZone(proof: string): ManifestBuilder {
-        this.instructions.push('POP_FROM_AUTH_ZONE Proof("' + proof + '");')
-        this.proofs.set(proof, this.id_allocator++);
+    /**
+     * Pops the most recent proof from the auth zone.
+     * 
+     * @param proofName The name of the new proof
+     * @returns 
+     */
+    popFromAuthZone(proofName: string): ManifestBuilder {
+        this.instructions.push('POP_FROM_AUTH_ZONE Proof("' + proofName + '");')
+        this.proofs.set(proofName, this.id_allocator++);
         return this;
     }
 
-    pushToAuthZone(proof: string): ManifestBuilder {
-        this.instructions.push('PUSH_TO_AUTH_ZONE Proof("' + proof + '");')
+    /**
+     * Pushes a proof onto the auth zone.
+     * 
+     * @param proofName The proof name
+     * @returns 
+     */
+    pushToAuthZone(proofName: string): ManifestBuilder {
+        this.instructions.push('PUSH_TO_AUTH_ZONE Proof("' + proofName + '");')
         return this;
     }
 
+    /**
+     * Clears the auth zone.
+     * 
+     * @returns 
+     */
     clearAuthZone(): ManifestBuilder {
-        this.instructions.push('CLEAR_AUTH_ZONE;\n');
+        this.instructions.push('CLEAR_AUTH_ZONE;');
         return this;
     }
 
-    createProofFromAuthZone(resourceAddress: string, proof: string): ManifestBuilder {
-        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE ResourceAddress("' + resourceAddress + '") Proof("' + proof + '");')
-        this.proofs.set(proof, this.id_allocator++);
+    /**
+     * Creates a composite proof from the auth zone.
+     * 
+     * @param resourceAddress The resource address
+     * @param proofName The name of the new proof
+     * @returns 
+     */
+    createProofFromAuthZone(resourceAddress: string, proofName: string): ManifestBuilder {
+        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE ResourceAddress("' + resourceAddress + '") Proof("' + proofName + '");')
+        this.proofs.set(proofName, this.id_allocator++);
         return this;
     }
 
-    createProofFromAuthZoneByAmount(amount: number, resourceAddress: string, proof: string): ManifestBuilder {
-        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE_BY_AMOUNT Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '") Proof("' + proof + '");')
-        this.proofs.set(proof, this.id_allocator++);
+    /**
+     * Creates a composite proof from the auth zone for a given amount.
+     * 
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @param proofName The name of the new proof
+     * @returns 
+     */
+    createProofFromAuthZoneByAmount(amount: number, resourceAddress: string, proofName: string): ManifestBuilder {
+        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE_BY_AMOUNT Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '") Proof("' + proofName + '");')
+        this.proofs.set(proofName, this.id_allocator++);
         return this;
     }
 
-    createProofFromAuthZoneByIds(nonFungibleIds: string[], resourceAddress: string, proof: string): ManifestBuilder {
-        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE_BY_IDS ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '") Proof("' + proof + '");')
-        this.proofs.set(proof, this.id_allocator++);
+    /**
+      * Creates a composite proof from the auth zone for the give non-fungibles.
+      * 
+      * @param nonFungibleIds The non-fungible IDs
+      * @param resourceAddress The resource address
+      * @param proofName The name of the new proof
+      * @returns 
+      */
+    createProofFromAuthZoneByIds(nonFungibleIds: string[], resourceAddress: string, proofName: string): ManifestBuilder {
+        this.instructions.push('CREATE_PROOF_FROM_AUTH_ZONE_BY_IDS ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '") Proof("' + proofName + '");')
+        this.proofs.set(proofName, this.id_allocator++);
         return this;
     }
 
-    cloneProof(proof: string, clone: string): ManifestBuilder {
-        this.instructions.push('CLONE_PROOF Proof("' + proof + '") Proof("' + clone + '");')
-        this.proofs.set(clone, this.id_allocator++);
+    /**
+     * Creates a composite proof from the auth zone for a given amount.
+     * 
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @param proofName The name of the new proof
+     * @returns 
+     */
+    createProofFromBucket(bucketName: string, proofName: string): ManifestBuilder {
+        this.instructions.push('CREATE_PROOF_FROM_BUCKET Bucket("' + bucketName + '") Proof("' + proofName + '");')
+        this.proofs.set(proofName, this.id_allocator++);
         return this;
     }
 
-    dropProof(proof: string): ManifestBuilder {
-        this.instructions.push('DROP_PROOF Proof("' + proof + '");')
+    /**
+     * Clones a proof.
+     * 
+     * @param proofName The proof name
+     * @param clone The clone proof name
+     * @returns 
+     */
+    cloneProof(proofName: string, cloneName: string): ManifestBuilder {
+        this.instructions.push('CLONE_PROOF Proof("' + proofName + '") Proof("' + cloneName + '");')
+        this.proofs.set(cloneName, this.id_allocator++);
         return this;
     }
 
-    // TODO: call function/method and publish package
+    /**
+     * Drops a proof.
+     * 
+     * @param proofName The proof name
+     * @returns 
+     */
+    dropProof(proofName: string): ManifestBuilder {
+        this.instructions.push('DROP_PROOF Proof("' + proofName + '");')
+        return this;
+    }
 
+    /**
+     * Calls a function on a blueprint.
+     * 
+     * @param packageAddress  The package address
+     * @param blueprintName  The blueprint name
+     * @param functionName  The function name
+     * @param args The arguments, which must be in manifest format, e.g. `1u8`, `"string"`, `Bucket("name")`
+     */
+    callFunction(packageAddress: string, blueprintName: string, functionName: string, args: string[]): ManifestBuilder {
+        this.instructions.push('CALL_FUNCTION PackageAddress("' + packageAddress + '") "' + blueprintName + '" "' + functionName + '" ' + args.join(" ") + ';')
+        return this;
+    }
+
+    /**
+     * Calls a method on a component.
+     * 
+     * @param componentAddress  The component address
+     * @param methodName The method name
+     * @param args The arguments, which must be in manifest format, e.g. `1u8`, `"string"`, `Bucket("name")`
+     * @returns 
+     */
+    callMethod(componentAddress: string, methodName: string, args: string[]): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + componentAddress + '") "' + methodName + '" ' + args.join(" ") + ';')
+        return this;
+    }
+
+    /**
+     * Calls a method on a component with all resources on or off worktop.
+     * 
+     * @param componentAddress  The component address
+     * @param methodName The method name
+     * @returns 
+     */
+    callMethodWithAllResources(componentAddress: string, methodName: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD_WITH_ALL_RESOURCES ComponentAddress("' + componentAddress + '") "' + methodName + '";');
+        return this;
+    }
+
+    /**
+     * Publishes a package.
+     * @param code The package wasm code
+     */
+    publishPackage(code: Uint8Array): ManifestBuilder {
+        var b64 = Buffer.from(code).toString('base64');
+        this.instructions.push('PUBLISH_PACKAGE Blob("' + b64 + '");');
+        return this
+    }
+
+    /**
+     * Builds a transaction manifest.
+     * 
+     * @returns a transaction manifest
+     */
     build(): Manifest {
         return new Manifest(this.instructions);
     }
 
     private formatNonFungibleIds(nonFungibleIds: string[]) {
         let ids = nonFungibleIds.map(id => 'NonFungibleId("' + id + '")').join(', ');
-        return 'BTreeSet<NonFungibleId>(' + ids + ')';
+        return 'TreeSet<NonFungibleId>(' + ids + ')';
     }
 }
