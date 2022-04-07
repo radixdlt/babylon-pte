@@ -24,7 +24,7 @@ export class ManifestBuilder {
     }
 
     /**
-     * Take all resource of the given address from worktop.
+     * Take all the given resource from worktop.
      * 
      * @param resourceAddress The resource address
      * @param bucketName The name of the new bucket
@@ -37,7 +37,7 @@ export class ManifestBuilder {
     }
 
     /**
-     * Take some amount of the given address from worktop.
+     * Take some amount of resource from worktop.
      * 
      * @param amount The amount
      * @param resourceAddress The resource address
@@ -144,7 +144,7 @@ export class ManifestBuilder {
     }
 
     /**
-     * Creates a composite proof from the auth zone.
+     * Creates a composite proof from the auth zone with all the given resource.
      * 
      * @param resourceAddress The resource address
      * @param proofName The name of the new proof
@@ -157,7 +157,7 @@ export class ManifestBuilder {
     }
 
     /**
-     * Creates a composite proof from the auth zone for a given amount.
+     * Creates a composite proof from the auth zone for the given amount.
      * 
      * @param amount The amount
      * @param resourceAddress The resource address
@@ -267,7 +267,85 @@ export class ManifestBuilder {
     publishPackage(code: Uint8Array): ManifestBuilder {
         var b64 = Buffer.from(code).toString('base64');
         this.instructions.push('PUBLISH_PACKAGE Blob("' + b64 + '");');
-        return this
+        return this;
+    }
+
+    /**
+   * Withdraws all the given resource from account.
+   * 
+   * @param accountAddress The account component address
+   * @param resourceAddress The resource address
+   * @param bucketName The name of the new bucket
+   * @returns 
+   */
+    withdrawFromAccount(accountAddress: String, resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "withdraw" ResourceAddress("' + resourceAddress + '");')
+        return this;
+    }
+
+    /**
+     * Withdraws some amount of resource from account.
+     * 
+     * @param accountAddress The account component address
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @returns 
+     */
+    withdrawFromAccountByAmount(accountAddress: String, amount: number, resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "withdraw_by_amount" Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '");')
+        return this;
+    }
+
+    /**
+     * Withdraws some non-fungibles from account.
+     * 
+     * @param accountAddress The account component address
+     * @param nonFungibleIds The non-fungible IDs
+     * @param resourceAddress The resource address
+     * @returns 
+     */
+    withdrawFromAccountByIds(accountAddress: String, nonFungibleIds: string[], resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "withdraw_by_ids" ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '");')
+        return this;
+    }
+
+    /**
+    * Creates proof of all the given resource from account.
+    * 
+    * @param accountAddress The account component address
+    * @param resourceAddress The resource address
+    * @param bucketName The name of the new bucket
+    * @returns 
+    */
+    createProofFromAccount(accountAddress: String, resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "create_proof" ResourceAddress("' + resourceAddress + '");')
+        return this;
+    }
+
+    /**
+     * Creates proof of some amount of resource from account.
+     * 
+     * @param accountAddress The account component address
+     * @param amount The amount
+     * @param resourceAddress The resource address
+     * @returns 
+     */
+    createProofFromAccountByAmount(accountAddress: String, amount: number, resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "create_proof_by_amount" Decimal("' + amount + '") ResourceAddress("' + resourceAddress + '");')
+        return this;
+    }
+
+    /**
+     * Creates proof of some non-fungibles from account.
+     * 
+     * @param accountAddress The account component address
+     * @param nonFungibleIds The non-fungible IDs
+     * @param resourceAddress The resource address
+     * @returns 
+     */
+    createProofFromAccountByIds(accountAddress: String, nonFungibleIds: string[], resourceAddress: string): ManifestBuilder {
+        this.instructions.push('CALL_METHOD ComponentAddress("' + accountAddress + '") "create_proof_by_ids" ' + this.formatNonFungibleIds(nonFungibleIds) + ' ResourceAddress("' + resourceAddress + '");')
+        return this;
     }
 
     /**
