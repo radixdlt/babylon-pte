@@ -4,22 +4,32 @@
  */
 
 export interface paths {
-  "/users": {
-    /** Optional extended description in CommonMark or HTML. */
+  "/show/{address}": {
     get: {
+      parameters: {};
       responses: {
-        /** A JSON array of user names */
+        /** Success */
         200: {
           content: {
-            "application/json": string[];
+            "application/json": components["schemas"]["ShowResponse"];
           };
         };
+        /** Runtime failure */
+        500: unknown;
       };
     };
   };
 }
 
-export interface components {}
+export interface components {
+  schemas: {
+    ShowResponse: {
+      package?: string;
+      /** Format: int64 */
+      code_size?: number;
+    };
+  };
+}
 
 export interface operations {}
 
