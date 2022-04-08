@@ -1,6 +1,5 @@
 
 import { Api } from './api';
-import fetch from 'node-fetch';
 
 describe('PTE API tests', function () {
     it('Test show system component', async function () {
