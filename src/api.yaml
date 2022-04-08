@@ -6,12 +6,15 @@ info:
 servers:
   - url: http://127.0.0.1:3331/
 paths:
-  /show/{address}:
+  /component/{address}:
     get:
-      summary: Shows an entity on ledger.
+      summary: Get info about a specific component
+      operationId: showComponentByAddress
       parameters:
         - name: address
+          description: The component address
           required: true
+          in: path
           schema:
             type: string
       responses:
@@ -19,13 +22,13 @@ paths:
           description: Success
           content:
             application/json:
-              schema: #
-                $ref: '#/components/schemas/ShowResponse'
+              schema:
+                $ref: '#/components/schemas/Component'
         '500':
           description: Runtime failure
 components:
   schemas:
-    ShowResponse:
+    Component:
       type: object
       properties:
         package:
