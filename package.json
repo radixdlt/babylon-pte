@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "build-schema": "npx swagger-typescript-api --axios -p ./src/api.yaml -o ./src -n api.ts",
-    "test": "jest"
+    "test": "jest",
+    "docs": "npx typedoc --out docs src"
   },
   "jest": {
     "transform": {
