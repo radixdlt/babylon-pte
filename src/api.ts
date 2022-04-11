@@ -12,6 +12,7 @@
 export type AnyValue = any;
 
 export interface Transaction {
+  hash?: string;
   manifest?: string;
   nonce?: number;
   signatures?: { publicKey?: string; signature?: string }[];
@@ -233,7 +234,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  receipt = {
+    /**
+     * No description
+     *
+     * @name GetTransactionReceipt
+     * @summary Retrieve a transaction receipt (NOT IMPLEMENTED).
+     * @request GET:/receipt
+     */
+    getTransactionReceipt: (hash: string, params: RequestParams = {}) =>
+      this.request<TransactionReceipt, void>({
+        path: `/receipt`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
   transaction = {
+    /**
+     * No description
+     *
+     * @name GetTransaction
+     * @summary Retrieve a transaction (NOT IMPLEMENTED).
+     * @request GET:/transaction
+     */
+    getTransaction: (hash: string, params: RequestParams = {}) =>
+      this.request<Transaction, void>({
+        path: `/transaction`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
     /**
      * No description
      *

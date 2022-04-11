@@ -92,7 +92,46 @@ paths:
                 $ref: "#/components/schemas/Transaction"
         "500":
           description: Runtime failure
+  /receipt:
+    get:
+      summary: Retrieve a transaction receipt (NOT IMPLEMENTED).
+      operationId: getTransactionReceipt
+      parameters:
+        - name: hash
+          description: The transaction hash
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionReceipt"
+        "404":
+          description: Transaction not found
   /transaction:
+    get:
+      summary: Retrieve a transaction (NOT IMPLEMENTED).
+      operationId: getTransaction
+      parameters:
+        - name: hash
+          description: The transaction hash
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "404":
+          description: Transaction not found
     post:
       summary: Submit a signed transaction
       operationId: submitTransaction
@@ -118,6 +157,8 @@ components:
     Transaction:
       type: object
       properties:
+        hash:
+          type: string
         manifest:
           type: string
         nonce:

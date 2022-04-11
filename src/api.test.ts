@@ -3,6 +3,7 @@ import { Api } from './api';
 
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
+const testHash = 'b14de5897bac0d7ce2495d0a6c7d155500921e226faf3425287f6575a6b05057'; // FIXME: provide actual hash
 const testManifest = 'CLEAR_AUTH_ZONE;';
 const testNonce = 4177801098;
 const testPublicKey = '04a0fe72493f50e0666a455c6c099277a69e3db2da4ae4159b347394738f3bb54eebec620a584cd467746873cf244531779438ba2ba5fc6220eae8c9cd0e8000aa';
@@ -36,6 +37,7 @@ describe('PTE API tests', function () {
     it('Test /transaction', async function () {
         const api = new Api();
         const receipt = await api.transaction.submitTransaction({
+            hash: testHash,
             manifest: testManifest,
             nonce: testNonce,
             signatures: [
@@ -46,5 +48,10 @@ describe('PTE API tests', function () {
             ]
         });
         expect(receipt).toBe('expected');
+
+        const tx = await api.transaction.getTransaction(testHash);
+        expect(tx).toBe('expected');
+        const re = await api.transaction.getTransaction(testHash);
+        expect(re).toBe('expected');
     })
 })
