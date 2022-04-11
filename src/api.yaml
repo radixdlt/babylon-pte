@@ -8,8 +8,8 @@ servers:
 paths:
   /component/{address}:
     get:
-      summary: Get info about a specific component
-      operationId: showComponentByAddress
+      summary: Get info about a component
+      operationId: getComponent
       parameters:
         - name: address
           description: The component address
@@ -18,21 +18,185 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Component'
-        '500':
+                $ref: "#/components/schemas/Component"
+        "500":
+          description: Runtime failure
+  /resource/{address}:
+    get:
+      summary: Get info about a resource
+      operationId: getResource
+      parameters:
+        - name: address
+          description: The resource address
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resource"
+        "500":
+          description: Runtime failure
+  /nonce:
+    get:
+      summary: Get the nonce of a signer set
+      operationId: getNonce
+      parameters:
+        - in: query
+          name: signers
+          description: The signer public keys
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+        "500":
+          description: Runtime failure
+  /manifest:
+    post:
+      summary: Sign a manifest using the shared key pair.
+      operationId: signManifest
+      requestBody:
+        description: The manifest content.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "500":
+          description: Runtime failure
+  /transaction:
+    post:
+      summary: Submit a signed transaction
+      operationId: submitTransaction
+      requestBody:
+        description: The transaction payload in hex.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionReceipt"
+        "500":
           description: Runtime failure
 components:
   schemas:
+    AnyValue: {}
+    Transaction:
+      type: object
+      properties:
+        manifest:
+          type: string
+        nonce:
+          type: integer
+        signatures:
+          type: array
+          items:
+            type: object
+            properties:
+              publicKey:
+                type: string
+              signature:
+                type: string
+    TransactionReceipt:
+      type: object
+      properties:
+        status:
+          type: string
+        outputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnyValue"
+        logs:
+          type: array
+          items:
+            type: string
+        newEntities:
+          type: object
+          properties:
+            packages:
+              type: array
+              items:
+                type: string
+            components:
+              type: array
+              items:
+                type: string
+            resources:
+              type: array
+              items:
+                type: string
     Component:
       type: object
       properties:
-        package:
+        blueprint:
+          type: object
+          properties:
+            packageAddress:
+              type: string
+            blueprintName:
+              type: string
+        authorization:
+          $ref: "#/components/schemas/AnyValue"
+        state:
+          $ref: "#/components/schemas/AnyValue"
+        ownedResources:
+          type: array
+          items:
+            type: object
+            properties:
+              amount:
+                type: string
+              resourceAddress:
+                type: string
+              name:
+                type: string
+              symbol:
+                type: string
+    Resource:
+      type: object
+      properties:
+        resourceType:
           type: string
-        code_size:
+        divisibility:
           type: integer
-          format: int64
+        metadata:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: string
+        totalSupply:
+          type: string

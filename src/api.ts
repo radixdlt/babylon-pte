@@ -9,11 +9,33 @@
  * ---------------------------------------------------------------
  */
 
-export interface Component {
-  package?: string;
+export type AnyValue = any;
 
-  /** @format int64 */
-  code_size?: number;
+export interface Transaction {
+  manifest?: string;
+  nonce?: number;
+  signatures?: { publicKey?: string; signature?: string }[];
+}
+
+export interface TransactionReceipt {
+  status?: string;
+  outputs?: AnyValue[];
+  logs?: string[];
+  newEntities?: { packages?: string[]; components?: string[]; resources?: string[] };
+}
+
+export interface Component {
+  blueprint?: { packageAddress?: string; blueprintName?: string };
+  authorization?: AnyValue;
+  state?: AnyValue;
+  ownedResources?: { amount?: string; resourceAddress?: string; name?: string; symbol?: string }[];
+}
+
+export interface Resource {
+  resourceType?: string;
+  divisibility?: number;
+  metadata?: { name?: string; value?: string }[];
+  totalSupply?: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -148,14 +170,83 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name ShowComponentByAddress
-     * @summary Get info about a specific component
+     * @name GetComponent
+     * @summary Get info about a component
      * @request GET:/component/{address}
      */
-    showComponentByAddress: (address: string, params: RequestParams = {}) =>
+    getComponent: (address: string, params: RequestParams = {}) =>
       this.request<Component, void>({
         path: `/component/${address}`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  resource = {
+    /**
+     * No description
+     *
+     * @name GetResource
+     * @summary Get info about a resource
+     * @request GET:/resource/{address}
+     */
+    getResource: (address: string, params: RequestParams = {}) =>
+      this.request<Resource, void>({
+        path: `/resource/${address}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  nonce = {
+    /**
+     * No description
+     *
+     * @name GetNonce
+     * @summary Get the nonce of a signer set
+     * @request GET:/nonce
+     */
+    getNonce: (query: { signers: string[] }, params: RequestParams = {}) =>
+      this.request<number, void>({
+        path: `/nonce`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  manifest = {
+    /**
+     * No description
+     *
+     * @name SignManifest
+     * @summary Sign a manifest using the shared key pair.
+     * @request POST:/manifest
+     */
+    signManifest: (data: string, params: RequestParams = {}) =>
+      this.request<Transaction, void>({
+        path: `/manifest`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  transaction = {
+    /**
+     * No description
+     *
+     * @name SubmitTransaction
+     * @summary Submit a signed transaction
+     * @request POST:/transaction
+     */
+    submitTransaction: (data: Transaction, params: RequestParams = {}) =>
+      this.request<TransactionReceipt, void>({
+        path: `/transaction`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
