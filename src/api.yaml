@@ -24,6 +24,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Component"
+        "404":
+          description: Component not found
         "500":
           description: Runtime failure
   /resource/{address}:
@@ -44,6 +46,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Resource"
+        "404":
+          description: Resource not found
         "500":
           description: Runtime failure
   /nonce:
