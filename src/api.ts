@@ -18,7 +18,7 @@ export interface Transaction {
   signatures?: { publicKey?: string; signature?: string }[];
 }
 
-export interface TransactionReceipt {
+export interface Receipt {
   status?: string;
   outputs?: AnyValue[];
   logs?: string[];
@@ -216,35 +216,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  manifest = {
-    /**
-     * No description
-     *
-     * @name SignManifest
-     * @summary Sign a manifest using the shared key pair.
-     * @request POST:/manifest
-     */
-    signManifest: (data: string, params: RequestParams = {}) =>
-      this.request<Transaction, void>({
-        path: `/manifest`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
   receipt = {
     /**
      * No description
      *
-     * @name GetTransactionReceipt
+     * @name GetReceipt
      * @summary Retrieve a transaction receipt (NOT IMPLEMENTED).
-     * @request GET:/receipt
+     * @request GET:/receipt/{hash}
      */
-    getTransactionReceipt: (hash: string, params: RequestParams = {}) =>
-      this.request<TransactionReceipt, void>({
-        path: `/receipt`,
+    getReceipt: (hash: string, params: RequestParams = {}) =>
+      this.request<Receipt, void>({
+        path: `/receipt/${hash}`,
         method: "GET",
         format: "json",
         ...params,
@@ -256,11 +238,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @name GetTransaction
      * @summary Retrieve a transaction (NOT IMPLEMENTED).
-     * @request GET:/transaction
+     * @request GET:/transaction/{hash}
      */
     getTransaction: (hash: string, params: RequestParams = {}) =>
       this.request<Transaction, void>({
-        path: `/transaction`,
+        path: `/transaction/${hash}`,
         method: "GET",
         format: "json",
         ...params,
@@ -274,8 +256,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/transaction
      */
     submitTransaction: (data: Transaction, params: RequestParams = {}) =>
-      this.request<TransactionReceipt, void>({
+      this.request<Receipt, void>({
         path: `/transaction`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  manifest = {
+    /**
+     * No description
+     *
+     * @name SignManifest
+     * @summary Sign a manifest using the shared key pair.
+     * @request POST:/manifest
+     */
+    signManifest: (data: string, params: RequestParams = {}) =>
+      this.request<Transaction, void>({
+        path: `/manifest`,
         method: "POST",
         body: data,
         type: ContentType.Json,

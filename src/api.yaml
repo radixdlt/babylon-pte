@@ -72,30 +72,10 @@ paths:
                 type: integer
         "500":
           description: Runtime failure
-  /manifest:
-    post:
-      summary: Sign a manifest using the shared key pair.
-      operationId: signManifest
-      requestBody:
-        description: The manifest content.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Transaction"
-        "500":
-          description: Runtime failure
-  /receipt:
+  /receipt/{hash}:
     get:
       summary: Retrieve a transaction receipt (NOT IMPLEMENTED).
-      operationId: getTransactionReceipt
+      operationId: getReceipt
       parameters:
         - name: hash
           description: The transaction hash
@@ -109,10 +89,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransactionReceipt"
+                $ref: "#/components/schemas/Receipt"
         "404":
           description: Transaction not found
-  /transaction:
+  /transaction/{hash}:
     get:
       summary: Retrieve a transaction (NOT IMPLEMENTED).
       operationId: getTransaction
@@ -132,6 +112,7 @@ paths:
                 $ref: "#/components/schemas/Transaction"
         "404":
           description: Transaction not found
+  /transaction:
     post:
       summary: Submit a signed transaction
       operationId: submitTransaction
@@ -148,7 +129,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransactionReceipt"
+                $ref: "#/components/schemas/Receipt"
+        "500":
+          description: Runtime failure
+  /manifest:
+    post:
+      summary: Sign a manifest using the shared key pair.
+      operationId: signManifest
+      requestBody:
+        description: The manifest content.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
         "500":
           description: Runtime failure
 components:
@@ -172,7 +173,7 @@ components:
                 type: string
               signature:
                 type: string
-    TransactionReceipt:
+    Receipt:
       type: object
       properties:
         status:

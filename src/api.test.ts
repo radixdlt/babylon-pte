@@ -51,7 +51,7 @@ describe('PTE API tests', function () {
 
         const tx = await api.transaction.getTransaction(testHash);
         expect(tx).toBe('expected');
-        const re = await api.transaction.getTransaction(testHash);
+        const re = await api.receipt.getReceipt(testHash);
         expect(re).toBe('expected');
     })
 })
