@@ -4,7 +4,7 @@ info:
   description: Babylon Public Test Environment (PTE) API specification.
   version: 1.0.0-draft
 servers:
-  - url: http://127.0.0.1:3331/
+  - url: http://127.0.0.1:8000/
 paths:
   /component/{address}:
     get:
@@ -197,31 +197,42 @@ components:
           type: array
           items:
             type: string
-        newEntities:
-          type: object
-          properties:
-            packages:
-              type: array
-              items:
-                type: string
-            components:
-              type: array
-              items:
-                type: string
-            resources:
-              type: array
-              items:
-                type: string
-          required:
-            - packages
-            - components
-            - resources
+        newPackages:
+          type: array
+          items:
+            type: string
+        newComponents:
+          type: array
+          items:
+            type: string
+        newResources:
+          type: array
+          items:
+            type: string
       required:
         - transactionHash
         - status
         - outputs
         - logs
-        - newEntities
+        - newPackages
+        - newComponents
+        - newResources
+    OwnedResource:
+      type: object
+      properties:
+        amount:
+          type: string
+        resourceAddress:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+      required:
+        - amount
+        - resourceAddress
+        - name
+        - symbol
     Component:
       type: object
       properties:
@@ -242,21 +253,7 @@ components:
         ownedResources:
           type: array
           items:
-            type: object
-            properties:
-              amount:
-                type: string
-              resourceAddress:
-                type: string
-              name:
-                type: string
-              symbol:
-                type: string
-            required:
-              - amount
-              - resourceAddress
-              - name
-              - symbol
+            $ref: "#/components/schemas/OwnedResource"
     Resource:
       type: object
       properties:

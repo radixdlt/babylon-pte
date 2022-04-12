@@ -29,14 +29,23 @@ export interface Receipt {
   status: string;
   outputs: AnyValue[];
   logs: string[];
-  newEntities: { packages: string[]; components: string[]; resources: string[] };
+  newPackages: string[];
+  newComponents: string[];
+  newResources: string[];
+}
+
+export interface OwnedResource {
+  amount: string;
+  resourceAddress: string;
+  name: string;
+  symbol: string;
 }
 
 export interface Component {
   blueprint?: { packageAddress: string; blueprintName: string };
   authorization?: AnyValue;
   state?: AnyValue;
-  ownedResources?: { amount: string; resourceAddress: string; name: string; symbol: string }[];
+  ownedResources?: OwnedResource[];
 }
 
 export interface Resource {
@@ -89,7 +98,7 @@ export class HttpClient<SecurityDataType = unknown> {
   private format?: ResponseType;
 
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "http://127.0.0.1:3331/" });
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "http://127.0.0.1:8000/" });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -169,7 +178,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title Babylon PTE API
  * @version 1.0.0-draft
- * @baseUrl http://127.0.0.1:3331/
+ * @baseUrl http://127.0.0.1:8000/
  *
  * Babylon Public Test Environment (PTE) API specification.
  */
