@@ -12,31 +12,31 @@
 export type AnyValue = any;
 
 export interface Transaction {
-  hash?: string;
-  manifest?: string;
-  nonce?: number;
-  signatures?: { publicKey?: string; signature?: string }[];
+  hash: string;
+  manifest: string;
+  nonce: number;
+  signatures: { publicKey?: string; signature?: string }[];
 }
 
 export interface Receipt {
-  status?: string;
-  outputs?: AnyValue[];
-  logs?: string[];
-  newEntities?: { packages?: string[]; components?: string[]; resources?: string[] };
+  status: string;
+  outputs: AnyValue[];
+  logs: string[];
+  newEntities: { packages: string[]; components: string[]; resources: string[] };
 }
 
 export interface Component {
-  blueprint?: { packageAddress?: string; blueprintName?: string };
+  blueprint?: { packageAddress: string; blueprintName: string };
   authorization?: AnyValue;
   state?: AnyValue;
-  ownedResources?: { amount?: string; resourceAddress?: string; name?: string; symbol?: string }[];
+  ownedResources?: { amount: string; resourceAddress: string; name: string; symbol: string }[];
 }
 
 export interface Resource {
-  resourceType?: string;
-  divisibility?: number;
-  metadata?: { name?: string; value?: string }[];
-  totalSupply?: string;
+  resourceType: string;
+  divisibility: number;
+  metadata: { name?: string; value?: string }[];
+  totalSupply: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

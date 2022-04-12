@@ -173,6 +173,11 @@ components:
                 type: string
               signature:
                 type: string
+      required:
+        - hash
+        - manifest
+        - nonce
+        - signatures
     Receipt:
       type: object
       properties:
@@ -201,6 +206,15 @@ components:
               type: array
               items:
                 type: string
+          required:
+            - packages
+            - components
+            - resources
+      required:
+        - status
+        - outputs
+        - logs
+        - newEntities
     Component:
       type: object
       properties:
@@ -211,6 +225,9 @@ components:
               type: string
             blueprintName:
               type: string
+          required:
+            - packageAddress
+            - blueprintName
         authorization:
           $ref: "#/components/schemas/AnyValue"
         state:
@@ -228,6 +245,11 @@ components:
                 type: string
               symbol:
                 type: string
+            required:
+              - amount
+              - resourceAddress
+              - name
+              - symbol
     Resource:
       type: object
       properties:
@@ -246,3 +268,8 @@ components:
                 type: string
         totalSupply:
           type: string
+      required:
+        - resourceType
+        - divisibility
+        - metadata
+        - totalSupply
