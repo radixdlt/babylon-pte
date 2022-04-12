@@ -37,7 +37,6 @@ describe('PTE API tests', function () {
     it('Test /transaction', async function () {
         const api = new Api();
         const receipt = await api.transaction.submitTransaction({
-            hash: testHash,
             manifest: testManifest,
             nonce: testNonce,
             signatures: [

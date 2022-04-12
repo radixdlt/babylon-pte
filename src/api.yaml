@@ -155,24 +155,28 @@ paths:
 components:
   schemas:
     AnyValue: {}
+    Signature:
+      type: object
+      properties:
+        publicKey:
+          type: string
+        signature:
+          type: string
+      required:
+        - publicKey
+        - signature
     Transaction:
       type: object
       properties:
-        hash:
-          type: string
         manifest:
           type: string
         nonce:
           type: integer
+          format: int64
         signatures:
           type: array
           items:
-            type: object
-            properties:
-              publicKey:
-                type: string
-              signature:
-                type: string
+            $ref: "#/components/schemas/Signature"
       required:
         - hash
         - manifest
@@ -181,6 +185,8 @@ components:
     Receipt:
       type: object
       properties:
+        transactionHash:
+          type: string
         status:
           type: string
         outputs:
@@ -211,6 +217,7 @@ components:
             - components
             - resources
       required:
+        - transactionHash
         - status
         - outputs
         - logs

@@ -11,14 +11,21 @@
 
 export type AnyValue = any;
 
+export interface Signature {
+  publicKey: string;
+  signature: string;
+}
+
 export interface Transaction {
-  hash: string;
   manifest: string;
+
+  /** @format int64 */
   nonce: number;
-  signatures: { publicKey?: string; signature?: string }[];
+  signatures: Signature[];
 }
 
 export interface Receipt {
+  transactionHash: string;
   status: string;
   outputs: AnyValue[];
   logs: string[];
