@@ -42,16 +42,16 @@ export interface OwnedResource {
 }
 
 export interface Component {
-  blueprint?: { packageAddress: string; blueprintName: string };
-  authorization?: AnyValue;
-  state?: AnyValue;
-  ownedResources?: OwnedResource[];
+  blueprint: { packageAddress: string; blueprintName: string };
+  authorization: AnyValue;
+  state: AnyValue;
+  ownedResources: OwnedResource[];
 }
 
 export interface Resource {
   resourceType: string;
   divisibility: number;
-  metadata: { name?: string; value?: string }[];
+  metadata: { name: string; value: string }[];
   totalSupply: string;
 }
 
@@ -237,7 +237,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name GetReceipt
-     * @summary Retrieve a transaction receipt (NOT IMPLEMENTED).
+     * @summary Retrieve a transaction receipt
      * @request GET:/receipt/{hash}
      */
     getReceipt: (hash: string, params: RequestParams = {}) =>
@@ -253,7 +253,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name GetTransaction
-     * @summary Retrieve a transaction (NOT IMPLEMENTED).
+     * @summary Retrieve a transaction
      * @request GET:/transaction/{hash}
      */
     getTransaction: (hash: string, params: RequestParams = {}) =>

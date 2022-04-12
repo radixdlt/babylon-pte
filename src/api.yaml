@@ -74,7 +74,7 @@ paths:
           description: Runtime failure
   /receipt/{hash}:
     get:
-      summary: Retrieve a transaction receipt (NOT IMPLEMENTED).
+      summary: Retrieve a transaction receipt
       operationId: getReceipt
       parameters:
         - name: hash
@@ -94,7 +94,7 @@ paths:
           description: Transaction not found
   /transaction/{hash}:
     get:
-      summary: Retrieve a transaction (NOT IMPLEMENTED).
+      summary: Retrieve a transaction
       operationId: getTransaction
       parameters:
         - name: hash
@@ -254,6 +254,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OwnedResource"
+      required:
+        - blueprint
+        - authorization
+        - state
+        - ownedResources
     Resource:
       type: object
       properties:
@@ -270,6 +275,9 @@ components:
                 type: string
               value:
                 type: string
+            required:
+              - name
+              - value
         totalSupply:
           type: string
       required:
