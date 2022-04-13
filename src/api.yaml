@@ -4,8 +4,38 @@ info:
   description: Babylon Public Test Environment (PTE) API specification.
   version: 1.0.0-draft
 servers:
-  - url: http://127.0.0.1:8000/
+  - url: https://pte01.extratools.works/
 paths:
+  /packages:
+    get:
+      summary: List all packages
+      operationId: listPackages
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          description: Runtime failure
+  /components:
+    get:
+      summary: List all components
+      operationId: listComponents
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          description: Runtime failure
   /component/{address}:
     get:
       summary: Get info about a component
@@ -26,6 +56,21 @@ paths:
                 $ref: "#/components/schemas/Component"
         "404":
           description: Component not found
+        "500":
+          description: Runtime failure
+  /resources:
+    get:
+      summary: List all resources
+      operationId: listResources
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
         "500":
           description: Runtime failure
   /resource/{address}:

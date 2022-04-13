@@ -1,5 +1,6 @@
 
-import { Api } from './api';
+import "isomorphic-fetch";
+import { DefaultApi } from '../';
 
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
@@ -11,46 +12,50 @@ const testSignature = '0360ed75d2852635286e50baa69233814cdfd195a1c40174f0bff3108
 
 describe('PTE API tests', function () {
     it('Test /component', async function () {
-        const api = new Api();
-        const info = await api.component.getComponent(systemComponent);
+        const api = new DefaultApi();
+        const info = await api.getComponent({
+            address: systemComponent
+        });
         expect(info).toBe('expected');
     })
 
     it('Test /resource', async function () {
-        const api = new Api();
-        const info = await api.resource.getResource(radixToken);
+        const api = new DefaultApi();
+        const info = await api.getResource({ address: radixToken });
         expect(info).toBe('expected');
     })
 
     it('Test /nonce', async function () {
-        const api = new Api();
-        const nonce = await api.nonce.getNonce({ signers: [testPublicKey] });
+        const api = new DefaultApi();
+        const nonce = await api.getNonce({ signers: [testPublicKey] });
         expect(nonce).toBe('expected');
     })
 
     it('Test /manifest', async function () {
-        const api = new Api();
-        const tx = await api.manifest.signManifest(testManifest);
+        const api = new DefaultApi();
+        const tx = await api.signManifest({ body: testManifest });
         expect(tx).toBe('expected');
     })
 
     it('Test /transaction', async function () {
-        const api = new Api();
-        const receipt = await api.transaction.submitTransaction({
-            manifest: testManifest,
-            nonce: testNonce,
-            signatures: [
-                {
-                    publicKey: testPublicKey,
-                    signature: testSignature
-                }
-            ]
+        const api = new DefaultApi();
+        const receipt = await api.submitTransaction({
+            transaction: {
+                manifest: testManifest,
+                nonce: testNonce,
+                signatures: [
+                    {
+                        publicKey: testPublicKey,
+                        signature: testSignature
+                    }
+                ]
+            }
         });
         expect(receipt).toBe('expected');
 
-        const tx = await api.transaction.getTransaction(testHash);
+        const tx = await api.getTransaction({ hash: testHash });
         expect(tx).toBe('expected');
-        const re = await api.receipt.getReceipt(testHash);
+        const re = await api.getReceipt({ hash: testHash });
         expect(re).toBe('expected');
     })
 })

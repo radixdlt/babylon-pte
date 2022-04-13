@@ -1,5 +1,5 @@
 
-import { ManifestBuilder } from './manifest';
+import { ManifestBuilder } from '../';
 
 describe('Manifest builder tests', function () {
     it('Test basic instructions', function () {
