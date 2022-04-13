@@ -1,10 +1,9 @@
 
 import "isomorphic-fetch";
-import { DefaultApi } from '../';
+import { DefaultApi } from './openapi';
 
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
-const testHash = 'b14de5897bac0d7ce2495d0a6c7d155500921e226faf3425287f6575a6b05057'; // FIXME: provide actual hash
 const testManifest = 'CLEAR_AUTH_ZONE;';
 const testNonce = 4177801098;
 const testPublicKey = '04a0fe72493f50e0666a455c6c099277a69e3db2da4ae4159b347394738f3bb54eebec620a584cd467746873cf244531779438ba2ba5fc6220eae8c9cd0e8000aa';
@@ -13,33 +12,38 @@ const testSignature = '0360ed75d2852635286e50baa69233814cdfd195a1c40174f0bff3108
 describe('PTE API tests', function () {
     it('Test /component', async function () {
         const api = new DefaultApi();
-        const info = await api.getComponent({
+        const component = await api.getComponent({
             address: systemComponent
         });
-        expect(info).toBe('expected');
+        console.log(component);
     })
 
     it('Test /resource', async function () {
         const api = new DefaultApi();
-        const info = await api.getResource({ address: radixToken });
-        expect(info).toBe('expected');
+        const resource = await api.getResource({ address: radixToken });
+        console.log(resource);
     })
 
     it('Test /nonce', async function () {
         const api = new DefaultApi();
         const nonce = await api.getNonce({ signers: [testPublicKey] });
-        expect(nonce).toBe('expected');
+        console.log(nonce);
     })
 
     it('Test /manifest', async function () {
         const api = new DefaultApi();
-        const tx = await api.signManifest({ body: testManifest });
-        expect(tx).toBe('expected');
+        const receipt = await api.runManifest({ body: testManifest });
+        console.log(receipt);
+
+        const tx = await api.getTransaction({ hash: receipt.transactionHash });
+        console.log(tx);
+        const re = await api.getReceipt({ hash: receipt.transactionHash });
+        console.log(receipt);
     })
 
     it('Test /transaction', async function () {
         const api = new DefaultApi();
-        const receipt = await api.submitTransaction({
+        const receipt = await api.runTransaction({
             transaction: {
                 manifest: testManifest,
                 nonce: testNonce,
@@ -51,11 +55,6 @@ describe('PTE API tests', function () {
                 ]
             }
         });
-        expect(receipt).toBe('expected');
-
-        const tx = await api.getTransaction({ hash: testHash });
-        expect(tx).toBe('expected');
-        const re = await api.getReceipt({ hash: testHash });
-        expect(re).toBe('expected');
+        console.log(receipt);
     })
 })
