@@ -119,7 +119,7 @@ paths:
           description: Runtime failure
   /receipt/{hash}:
     get:
-      summary: Retrieve a transaction receipt
+      summary: Retrieve a receipt
       operationId: getReceipt
       parameters:
         - name: hash
@@ -159,8 +159,8 @@ paths:
           description: Transaction not found
   /transaction:
     post:
-      summary: Submit a signed transaction
-      operationId: submitTransaction
+      summary: Execute a signed transaction
+      operationId: runTransaction
       requestBody:
         description: The transaction payload in hex.
         required: true
@@ -179,8 +179,8 @@ paths:
           description: Runtime failure
   /manifest:
     post:
-      summary: Sign a manifest using the shared key pair.
-      operationId: signManifest
+      summary: Execute a manifest with the shared account
+      operationId: runManifest
       requestBody:
         description: The manifest content.
         required: true
@@ -194,7 +194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transaction"
+                $ref: "#/components/schemas/Receipt"
         "500":
           description: Runtime failure
 components:

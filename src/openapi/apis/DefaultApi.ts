@@ -49,11 +49,11 @@ export interface GetTransactionRequest {
     hash: string;
 }
 
-export interface SignManifestRequest {
+export interface RunManifestRequest {
     body: string;
 }
 
-export interface SubmitTransactionRequest {
+export interface RunTransactionRequest {
     transaction: Transaction;
 }
 
@@ -127,7 +127,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a transaction receipt
+     * Retrieve a receipt
      */
     async getReceiptRaw(requestParameters: GetReceiptRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receipt>> {
         if (requestParameters.hash === null || requestParameters.hash === undefined) {
@@ -149,7 +149,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a transaction receipt
+     * Retrieve a receipt
      */
     async getReceipt(requestParameters: GetReceiptRequest, initOverrides?: RequestInit): Promise<Receipt> {
         const response = await this.getReceiptRaw(requestParameters, initOverrides);
@@ -295,11 +295,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Sign a manifest using the shared key pair.
+     * Execute a manifest with the shared account
      */
-    async signManifestRaw(requestParameters: SignManifestRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Transaction>> {
+    async runManifestRaw(requestParameters: RunManifestRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receipt>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling signManifest.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling runManifest.');
         }
 
         const queryParameters: any = {};
@@ -316,23 +316,23 @@ export class DefaultApi extends runtime.BaseAPI {
             body: requestParameters.body as any,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReceiptFromJSON(jsonValue));
     }
 
     /**
-     * Sign a manifest using the shared key pair.
+     * Execute a manifest with the shared account
      */
-    async signManifest(requestParameters: SignManifestRequest, initOverrides?: RequestInit): Promise<Transaction> {
-        const response = await this.signManifestRaw(requestParameters, initOverrides);
+    async runManifest(requestParameters: RunManifestRequest, initOverrides?: RequestInit): Promise<Receipt> {
+        const response = await this.runManifestRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Submit a signed transaction
+     * Execute a signed transaction
      */
-    async submitTransactionRaw(requestParameters: SubmitTransactionRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receipt>> {
+    async runTransactionRaw(requestParameters: RunTransactionRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Receipt>> {
         if (requestParameters.transaction === null || requestParameters.transaction === undefined) {
-            throw new runtime.RequiredError('transaction','Required parameter requestParameters.transaction was null or undefined when calling submitTransaction.');
+            throw new runtime.RequiredError('transaction','Required parameter requestParameters.transaction was null or undefined when calling runTransaction.');
         }
 
         const queryParameters: any = {};
@@ -353,10 +353,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Submit a signed transaction
+     * Execute a signed transaction
      */
-    async submitTransaction(requestParameters: SubmitTransactionRequest, initOverrides?: RequestInit): Promise<Receipt> {
-        const response = await this.submitTransactionRaw(requestParameters, initOverrides);
+    async runTransaction(requestParameters: RunTransactionRequest, initOverrides?: RequestInit): Promise<Receipt> {
+        const response = await this.runTransactionRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
