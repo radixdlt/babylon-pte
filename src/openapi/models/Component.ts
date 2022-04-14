@@ -40,16 +40,16 @@ export interface Component {
     blueprint: ComponentBlueprint;
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof Component
      */
-    authorization: any | null;
+    authorization: string;
     /**
      * 
-     * @type {any}
+     * @type {string}
      * @memberof Component
      */
-    state: any | null;
+    state: string;
     /**
      * 
      * @type {Array<OwnedResource>}

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './BadRequest';
 export * from './Component';
 export * from './ComponentBlueprint';
 export * from './OwnedResource';

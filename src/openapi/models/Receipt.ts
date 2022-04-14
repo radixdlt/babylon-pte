@@ -33,10 +33,10 @@ export interface Receipt {
     status: string;
     /**
      * 
-     * @type {Array<any>}
+     * @type {Array<string>}
      * @memberof Receipt
      */
-    outputs: Array<any>;
+    outputs: Array<string>;
     /**
      * 
      * @type {Array<string>}

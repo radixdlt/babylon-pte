@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    BadRequest,
+    BadRequestFromJSON,
+    BadRequestToJSON,
     Component,
     ComponentFromJSON,
     ComponentToJSON,
