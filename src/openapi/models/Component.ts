@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AuthRule,
+    AuthRuleFromJSON,
+    AuthRuleFromJSONTyped,
+    AuthRuleToJSON,
+} from './AuthRule';
+import {
     ComponentBlueprint,
     ComponentBlueprintFromJSON,
     ComponentBlueprintFromJSONTyped,
@@ -40,10 +46,10 @@ export interface Component {
     blueprint: ComponentBlueprint;
     /**
      * 
-     * @type {string}
+     * @type {Array<AuthRule>}
      * @memberof Component
      */
-    authorization: string;
+    authRules: Array<AuthRule>;
     /**
      * 
      * @type {string}
@@ -69,7 +75,7 @@ export function ComponentFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     return {
         
         'blueprint': ComponentBlueprintFromJSON(json['blueprint']),
-        'authorization': json['authorization'],
+        'authRules': ((json['authRules'] as Array<any>).map(AuthRuleFromJSON)),
         'state': json['state'],
         'ownedResources': ((json['ownedResources'] as Array<any>).map(OwnedResourceFromJSON)),
     };
@@ -85,7 +91,7 @@ export function ComponentToJSON(value?: Component | null): any {
     return {
         
         'blueprint': ComponentBlueprintToJSON(value.blueprint),
-        'authorization': value.authorization,
+        'authRules': ((value.authRules as Array<any>).map(AuthRuleToJSON)),
         'state': value.state,
         'ownedResources': ((value.ownedResources as Array<any>).map(OwnedResourceToJSON)),
     };

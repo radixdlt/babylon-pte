@@ -315,6 +315,16 @@ components:
         - resourceAddress
         - name
         - symbol
+    AuthRule:
+      type: object
+      properties:
+        name:
+          type: string
+        rule:
+          $ref: "#/components/schemas/AnyValue"
+      required:
+        - name
+        - rule
     Component:
       type: object
       properties:
@@ -328,8 +338,10 @@ components:
           required:
             - packageAddress
             - blueprintName
-        authorization:
-          $ref: "#/components/schemas/AnyValue"
+        authRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthRule"
         state:
           $ref: "#/components/schemas/AnyValue"
         ownedResources:
@@ -338,7 +350,7 @@ components:
             $ref: "#/components/schemas/OwnedResource"
       required:
         - blueprint
-        - authorization
+        - authRules
         - state
         - ownedResources
     Resource:

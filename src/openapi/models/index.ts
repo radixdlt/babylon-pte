@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AuthRule';
 export * from './BadRequest';
 export * from './Component';
 export * from './ComponentBlueprint';

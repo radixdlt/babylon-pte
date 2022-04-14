@@ -1,6 +1,8 @@
+.openapi-generator-ignore
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
+models/AuthRule.ts
 models/BadRequest.ts
 models/Component.ts
 models/ComponentBlueprint.ts
