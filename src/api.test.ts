@@ -65,7 +65,7 @@ describe('PTE API tests', function () {
             .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
             .callFunction('010000000000000000000000000000000000000000000000000003', 'Account', 'new_with_resource',
                 [
-                    'Enum(1u8, Enum(0u8, Enum(0u8, Enum(0u8, NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + testPublicKey + '")))))',
+                    'Enum(2u8, Enum(0u8, Enum(0u8, Enum(0u8, NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + testPublicKey + '")))))',
                     'Bucket("xrd")'
                 ]
             )
