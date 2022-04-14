@@ -1,6 +1,7 @@
 
 import "isomorphic-fetch";
 import { DefaultApi } from './openapi';
+import { ManifestBuilder } from './manifest';
 
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
@@ -57,4 +58,23 @@ describe('PTE API tests', function () {
         });
         console.log(receipt);
     })
+
+    it('Test account creation', async function () {
+        const manifest = new ManifestBuilder()
+            .callMethod('020000000000000000000000000000000000000000000000000002', 'free_xrd', [])
+            .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
+            .callFunction('010000000000000000000000000000000000000000000000000003', 'Account', 'new_with_resource',
+                [
+                    'Enum(1u8, Enum(0u8, Enum(0u8, Enum(0u8, NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + testPublicKey + '")))))',
+                    'Bucket("xrd")'
+                ]
+            )
+            .build();
+
+        const api = new DefaultApi();
+        const receipt = await api.runManifest({ body: manifest.toString() });
+        console.log(receipt);
+    })
+
+
 })
