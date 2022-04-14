@@ -5,9 +5,9 @@ import { DefaultApi } from './openapi';
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
 const testManifest = 'CLEAR_AUTH_ZONE;';
-const testNonce = 4177801098;
-const testPublicKey = '04a0fe72493f50e0666a455c6c099277a69e3db2da4ae4159b347394738f3bb54eebec620a584cd467746873cf244531779438ba2ba5fc6220eae8c9cd0e8000aa';
-const testSignature = '0360ed75d2852635286e50baa69233814cdfd195a1c40174f0bff310861e448a132dff5e2df88a27b06c7bb4c3ed3f95a978410182af62a897e856fe33261a68';
+const testNonce = 1796006201;
+const testPublicKey = '042b10770b3acba7a92916d3349fd0f219b79a9939ed2f17cdb8c2c4543a4fd3e7e86659a90ad4e078d7e93fdbecca41b4a0a57f326db4b7691103c53776336f0e';
+const testSignature = 'b277d4e4ff8d5fcc8beb0ba4ac60f4d52d42718d6b8442cd552bce11256a876f702925d4f23f5d444434f855faac2e9da6d78921a603bfa299029608e3b59e5c';
 
 describe('PTE API tests', function () {
     it('Test /component', async function () {
