@@ -178,7 +178,7 @@ paths:
   /transaction:
     post:
       summary: Execute a signed transaction
-      operationId: runTransaction
+      operationId: submitTransaction
       requestBody:
         description: The transaction payload in hex.
         required: true
@@ -186,30 +186,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Transaction"
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Receipt"
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BadRequest"
-  /manifest:
-    post:
-      summary: Execute a manifest with the shared account
-      operationId: runManifest
-      requestBody:
-        description: The manifest content.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: string
       responses:
         "200":
           description: Success
@@ -240,12 +216,12 @@ components:
     Signature:
       type: object
       properties:
-        publicKey:
+        public_key:
           type: string
         signature:
           type: string
       required:
-        - publicKey
+        - public_key
         - signature
     Transaction:
       type: object
@@ -267,7 +243,7 @@ components:
     Receipt:
       type: object
       properties:
-        transactionHash:
+        transaction_hash:
           type: string
         status:
           type: string
@@ -279,32 +255,32 @@ components:
           type: array
           items:
             type: string
-        newPackages:
+        new_packages:
           type: array
           items:
             type: string
-        newComponents:
+        new_components:
           type: array
           items:
             type: string
-        newResources:
+        new_resources:
           type: array
           items:
             type: string
       required:
-        - transactionHash
+        - transaction_hash
         - status
         - outputs
         - logs
-        - newPackages
-        - newComponents
-        - newResources
+        - new_packages
+        - new_components
+        - new_resources
     OwnedResource:
       type: object
       properties:
         amount:
           type: string
-        resourceAddress:
+        resource_address:
           type: string
         name:
           type: string
@@ -312,7 +288,7 @@ components:
           type: string
       required:
         - amount
-        - resourceAddress
+        - resource_address
         - name
         - symbol
     AuthRule:
@@ -331,32 +307,32 @@ components:
         blueprint:
           type: object
           properties:
-            packageAddress:
+            package_address:
               type: string
-            blueprintName:
+            blueprint_name:
               type: string
           required:
-            - packageAddress
-            - blueprintName
-        authRules:
+            - package_address
+            - blueprint_name
+        auth_rules:
           type: array
           items:
             $ref: "#/components/schemas/AuthRule"
         state:
           $ref: "#/components/schemas/AnyValue"
-        ownedResources:
+        owned_resources:
           type: array
           items:
             $ref: "#/components/schemas/OwnedResource"
       required:
         - blueprint
-        - authRules
+        - auth_rules
         - state
-        - ownedResources
+        - owned_resources
     Resource:
       type: object
       properties:
-        resourceType:
+        resource_type:
           type: string
         divisibility:
           type: integer
@@ -372,10 +348,10 @@ components:
             required:
               - name
               - value
-        totalSupply:
+        total_supply:
           type: string
       required:
-        - resourceType
+        - resource_type
         - divisibility
         - metadata
-        - totalSupply
+        - total_supply

@@ -75,9 +75,9 @@ export function ComponentFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     return {
         
         'blueprint': ComponentBlueprintFromJSON(json['blueprint']),
-        'authRules': ((json['authRules'] as Array<any>).map(AuthRuleFromJSON)),
+        'authRules': ((json['auth_rules'] as Array<any>).map(AuthRuleFromJSON)),
         'state': json['state'],
-        'ownedResources': ((json['ownedResources'] as Array<any>).map(OwnedResourceFromJSON)),
+        'ownedResources': ((json['owned_resources'] as Array<any>).map(OwnedResourceFromJSON)),
     };
 }
 
@@ -91,9 +91,9 @@ export function ComponentToJSON(value?: Component | null): any {
     return {
         
         'blueprint': ComponentBlueprintToJSON(value.blueprint),
-        'authRules': ((value.authRules as Array<any>).map(AuthRuleToJSON)),
+        'auth_rules': ((value.authRules as Array<any>).map(AuthRuleToJSON)),
         'state': value.state,
-        'ownedResources': ((value.ownedResources as Array<any>).map(OwnedResourceToJSON)),
+        'owned_resources': ((value.ownedResources as Array<any>).map(OwnedResourceToJSON)),
     };
 }
 

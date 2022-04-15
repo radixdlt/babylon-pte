@@ -31,20 +31,9 @@ describe('PTE API tests', function () {
         console.log(nonce);
     })
 
-    it('Test /manifest', async function () {
-        const api = new DefaultApi();
-        const receipt = await api.runManifest({ body: testManifest });
-        console.log(receipt);
-
-        const tx = await api.getTransaction({ hash: receipt.transactionHash });
-        console.log(tx);
-        const re = await api.getReceipt({ hash: receipt.transactionHash });
-        console.log(receipt);
-    })
-
     it('Test /transaction', async function () {
         const api = new DefaultApi();
-        const receipt = await api.runTransaction({
+        const receipt = await api.submitTransaction({
             transaction: {
                 manifest: testManifest,
                 nonce: testNonce,
@@ -56,6 +45,11 @@ describe('PTE API tests', function () {
                 ]
             }
         });
+        console.log(receipt);
+
+        const tx = await api.getTransaction({ hash: receipt.transactionHash });
+        console.log(tx);
+        const re = await api.getReceipt({ hash: receipt.transactionHash });
         console.log(receipt);
     })
 
@@ -72,7 +66,15 @@ describe('PTE API tests', function () {
             .build();
 
         const api = new DefaultApi();
-        const receipt = await api.runManifest({ body: manifest.toString() });
+        const nonce = await api.getNonce({ signers: [testPublicKey] })
+        const receipt = await api.submitTransaction({
+            transaction: {
+                manifest: testManifest,
+                nonce,
+                signatures: [
+                ]
+            }
+        });
         console.log(receipt);
     })
 

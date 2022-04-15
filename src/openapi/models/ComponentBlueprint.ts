@@ -43,8 +43,8 @@ export function ComponentBlueprintFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'packageAddress': json['packageAddress'],
-        'blueprintName': json['blueprintName'],
+        'packageAddress': json['package_address'],
+        'blueprintName': json['blueprint_name'],
     };
 }
 
@@ -57,8 +57,8 @@ export function ComponentBlueprintToJSON(value?: ComponentBlueprint | null): any
     }
     return {
         
-        'packageAddress': value.packageAddress,
-        'blueprintName': value.blueprintName,
+        'package_address': value.packageAddress,
+        'blueprint_name': value.blueprintName,
     };
 }
 

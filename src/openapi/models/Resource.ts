@@ -62,10 +62,10 @@ export function ResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'resourceType': json['resourceType'],
+        'resourceType': json['resource_type'],
         'divisibility': json['divisibility'],
         'metadata': ((json['metadata'] as Array<any>).map(ResourceMetadataFromJSON)),
-        'totalSupply': json['totalSupply'],
+        'totalSupply': json['total_supply'],
     };
 }
 
@@ -78,10 +78,10 @@ export function ResourceToJSON(value?: Resource | null): any {
     }
     return {
         
-        'resourceType': value.resourceType,
+        'resource_type': value.resourceType,
         'divisibility': value.divisibility,
         'metadata': ((value.metadata as Array<any>).map(ResourceMetadataToJSON)),
-        'totalSupply': value.totalSupply,
+        'total_supply': value.totalSupply,
     };
 }
 

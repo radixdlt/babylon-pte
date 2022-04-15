@@ -73,13 +73,13 @@ export function ReceiptFromJSONTyped(json: any, ignoreDiscriminator: boolean): R
     }
     return {
         
-        'transactionHash': json['transactionHash'],
+        'transactionHash': json['transaction_hash'],
         'status': json['status'],
         'outputs': json['outputs'],
         'logs': json['logs'],
-        'newPackages': json['newPackages'],
-        'newComponents': json['newComponents'],
-        'newResources': json['newResources'],
+        'newPackages': json['new_packages'],
+        'newComponents': json['new_components'],
+        'newResources': json['new_resources'],
     };
 }
 
@@ -92,13 +92,13 @@ export function ReceiptToJSON(value?: Receipt | null): any {
     }
     return {
         
-        'transactionHash': value.transactionHash,
+        'transaction_hash': value.transactionHash,
         'status': value.status,
         'outputs': value.outputs,
         'logs': value.logs,
-        'newPackages': value.newPackages,
-        'newComponents': value.newComponents,
-        'newResources': value.newResources,
+        'new_packages': value.newPackages,
+        'new_components': value.newComponents,
+        'new_resources': value.newResources,
     };
 }
 

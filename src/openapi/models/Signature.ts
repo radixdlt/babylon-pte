@@ -43,7 +43,7 @@ export function SignatureFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
-        'publicKey': json['publicKey'],
+        'publicKey': json['public_key'],
         'signature': json['signature'],
     };
 }
@@ -57,7 +57,7 @@ export function SignatureToJSON(value?: Signature | null): any {
     }
     return {
         
-        'publicKey': value.publicKey,
+        'public_key': value.publicKey,
         'signature': value.signature,
     };
 }

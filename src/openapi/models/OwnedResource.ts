@@ -56,7 +56,7 @@ export function OwnedResourceFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'amount': json['amount'],
-        'resourceAddress': json['resourceAddress'],
+        'resourceAddress': json['resource_address'],
         'name': json['name'],
         'symbol': json['symbol'],
     };
@@ -72,7 +72,7 @@ export function OwnedResourceToJSON(value?: OwnedResource | null): any {
     return {
         
         'amount': value.amount,
-        'resourceAddress': value.resourceAddress,
+        'resource_address': value.resourceAddress,
         'name': value.name,
         'symbol': value.symbol,
     };
