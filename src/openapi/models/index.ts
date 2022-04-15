@@ -4,6 +4,7 @@ export * from './AuthRule';
 export * from './BadRequest';
 export * from './Component';
 export * from './ComponentBlueprint';
+export * from './Nonce';
 export * from './OwnedResource';
 export * from './Receipt';
 export * from './Resource';

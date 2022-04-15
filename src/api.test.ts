@@ -36,7 +36,9 @@ describe('PTE API tests', function () {
         const receipt = await api.submitTransaction({
             transaction: {
                 manifest: testManifest,
-                nonce: testNonce,
+                nonce: {
+                    value: testNonce
+                },
                 signatures: [
                     {
                         publicKey: testPublicKey,
@@ -66,7 +68,7 @@ describe('PTE API tests', function () {
             .build();
 
         const api = new DefaultApi();
-        const nonce = await api.getNonce({ signers: [testPublicKey] })
+        const nonce = await api.getNonce({ signers: [testPublicKey] });
         const receipt = await api.submitTransaction({
             transaction: {
                 manifest: testManifest,

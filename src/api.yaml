@@ -116,7 +116,7 @@ paths:
           content:
             application/json:
               schema:
-                type: integer
+                $ref: "#/components/schemas/Nonce"
         "400":
           description: BadRequest
           content:
@@ -223,14 +223,21 @@ components:
       required:
         - public_key
         - signature
+    Nonce:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+      required:
+        - value
     Transaction:
       type: object
       properties:
         manifest:
           type: string
         nonce:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/Nonce"
         signatures:
           type: array
           items:

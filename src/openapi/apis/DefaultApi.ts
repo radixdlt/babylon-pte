@@ -21,6 +21,9 @@ import {
     Component,
     ComponentFromJSON,
     ComponentToJSON,
+    Nonce,
+    NonceFromJSON,
+    NonceToJSON,
     Receipt,
     ReceiptFromJSON,
     ReceiptToJSON,
@@ -94,7 +97,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Get the nonce of a signer set
      */
-    async getNonceRaw(requestParameters: GetNonceRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<number>> {
+    async getNonceRaw(requestParameters: GetNonceRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Nonce>> {
         if (requestParameters.signers === null || requestParameters.signers === undefined) {
             throw new runtime.RequiredError('signers','Required parameter requestParameters.signers was null or undefined when calling getNonce.');
         }
@@ -114,13 +117,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => NonceFromJSON(jsonValue));
     }
 
     /**
      * Get the nonce of a signer set
      */
-    async getNonce(requestParameters: GetNonceRequest, initOverrides?: RequestInit): Promise<number> {
+    async getNonce(requestParameters: GetNonceRequest, initOverrides?: RequestInit): Promise<Nonce> {
         const response = await this.getNonceRaw(requestParameters, initOverrides);
         return await response.value();
     }

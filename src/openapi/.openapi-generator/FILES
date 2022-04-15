@@ -5,6 +5,7 @@ models/AuthRule.ts
 models/BadRequest.ts
 models/Component.ts
 models/ComponentBlueprint.ts
+models/Nonce.ts
 models/OwnedResource.ts
 models/Receipt.ts
 models/Resource.ts

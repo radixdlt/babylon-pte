@@ -14,6 +14,12 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    Nonce,
+    NonceFromJSON,
+    NonceFromJSONTyped,
+    NonceToJSON,
+} from './Nonce';
+import {
     Signature,
     SignatureFromJSON,
     SignatureFromJSONTyped,
@@ -34,10 +40,10 @@ export interface Transaction {
     manifest: string;
     /**
      * 
-     * @type {number}
+     * @type {Nonce}
      * @memberof Transaction
      */
-    nonce: number;
+    nonce: Nonce;
     /**
      * 
      * @type {Array<Signature>}
@@ -57,7 +63,7 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
     return {
         
         'manifest': json['manifest'],
-        'nonce': json['nonce'],
+        'nonce': NonceFromJSON(json['nonce']),
         'signatures': ((json['signatures'] as Array<any>).map(SignatureFromJSON)),
     };
 }
@@ -72,7 +78,7 @@ export function TransactionToJSON(value?: Transaction | null): any {
     return {
         
         'manifest': value.manifest,
-        'nonce': value.nonce,
+        'nonce': NonceToJSON(value.nonce),
         'signatures': ((value.signatures as Array<any>).map(SignatureToJSON)),
     };
 }
