@@ -1,5 +1,5 @@
 [package]
-name = "manifest-compiler"
+name = "pte-manifest-compiler"
 version = "0.1.0"
 authors = ["Yulong Wu <yulong@radixdlt.com>"]
 edition = "2018"
