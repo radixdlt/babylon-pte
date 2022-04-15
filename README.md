@@ -9,7 +9,7 @@ Babylon Public Test Environment (PTE), a very simple public network simulator th
 
 A proof-of-concept browser extension is provided for accessing the test environment via Chrome Browser.
 
-You can download a prebuilt extension from the [latest releases]([./todo](https://github.com/radixdlt/babylon-pte/releases)).
+You can download a prebuilt extension from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
 
 
 ## PTE RESIM CLI
@@ -17,7 +17,7 @@ You can download a prebuilt extension from the [latest releases]([./todo](https:
 If you've been using `resim`, you may find the PTE CLI tool useful. It provides the same interfaces but talks to the PTE service.
 
 
-You can download the CLI from the [latest releases]([./todo](https://github.com/radixdlt/babylon-pte/releases)).
+You can download the CLI from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
 
 
 ## PTE API Specification
