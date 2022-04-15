@@ -7,9 +7,9 @@ Babylon Public Test Environment (PTE), a very simple public network simulator th
 
 ## PTE Browser Extension
 
-A proof-of-concept browser extension is also provided for accessing the test environment via Chrome.
+A proof-of-concept browser extension is provided for accessing the test environment via Chrome Browser.
 
-You can download it from the [latest releases](./todo).
+You can download a prebuilt extension from the [latest releases]([./todo](https://github.com/radixdlt/babylon-pte/releases)).
 
 
 ## PTE RESIM CLI
@@ -17,12 +17,12 @@ You can download it from the [latest releases](./todo).
 If you've been using `resim`, you may find the PTE CLI tool useful. It provides the same interfaces but talks to the PTE service.
 
 
-You can download it from the [latest releases](./todo).
+You can download the CLI from the [latest releases]([./todo](https://github.com/radixdlt/babylon-pte/releases)).
 
 
 ## PTE API Specification
 
-You can find the full OpenAPI v3 specification [here](./pte-api-spec/api.yaml).
+PTE API service is fully specified in OpenAPI v3. You can find the  specification [here](./pte-api-spec/api.yaml).
 
 
 ## PTE Javascript SDKs
@@ -33,6 +33,8 @@ For DApp developers, three Typescript/Javascript SDKs are provided:
 * `pte-wallet-sdk` - An SDK for interacting with PTE browser extension;
 * `pte-manifest-compiler` - A library that compiles a manifest into a transaction.
 
-## Example
+## DApp Examples
 
-TBA
+Some preliminary DApp examples are provided [here](./examples/). 
+
+You're also welcome to add your own examples by making a pull request.
