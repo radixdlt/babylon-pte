@@ -1,6 +1,6 @@
 {
   "name": "pte-sdk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "This is javascript library for interacting with Babylon public test environment.",
   "main": "out/index.js",
   "scripts": {
