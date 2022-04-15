@@ -1,2 +1,2 @@
 export * from './manifest';
-export * from './openapi';
+export * from './api';

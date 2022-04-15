@@ -1,6 +1,6 @@
 
 import "isomorphic-fetch";
-import { DefaultApi } from './openapi';
+import { DefaultApi } from './api';
 import { ManifestBuilder } from './manifest';
 
 const systemComponent = '020000000000000000000000000000000000000000000000000002';

@@ -3,7 +3,3 @@ node_modules/
 package-lock.json
 out/
 .DS_Store
-
-# needed for now
-rust/
-dapp/
