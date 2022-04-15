@@ -33,3 +33,6 @@ For DApp developers, three Typescript/Javascript SDKs are provided:
 * `pte-wallet-sdk` - An SDK for interacting with PTE browser extension;
 * `pte-manifest-compiler` - A library that compiles a manifest into a transaction.
 
+## Example
+
+TBA
