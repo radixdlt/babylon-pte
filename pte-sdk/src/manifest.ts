@@ -349,6 +349,19 @@ export class ManifestBuilder {
     }
 
     /**
+     * Creates a new account.
+     * @param publicKey The public key 
+     * @returns 
+     */
+    newAccount(publicKey: String): ManifestBuilder {
+        const auth = 'Enum(2u8, Enum(0u8, Enum(0u8, Enum(0u8, NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + publicKey + '")))))';
+
+        return this.callMethod('020000000000000000000000000000000000000000000000000002', 'free_xrd', [])
+            .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
+            .callFunction('010000000000000000000000000000000000000000000000000003', 'Account', 'new_with_resource', [auth, 'Bucket("xrd")']);
+    }
+
+    /**
      * Builds a transaction manifest.
      * 
      * @returns a transaction manifest
