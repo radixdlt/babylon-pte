@@ -265,8 +265,8 @@ export class ManifestBuilder {
      * @param code The package wasm code
      */
     publishPackage(code: Uint8Array): ManifestBuilder {
-        var b64 = Buffer.from(code).toString('base64');
-        this.instructions.push('PUBLISH_PACKAGE Blob("' + b64 + '");');
+        var hex = Buffer.from(code).toString('hex');
+        this.instructions.push('PUBLISH_PACKAGE Bytes("' + hex + '");');
         return this;
     }
 
