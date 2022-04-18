@@ -1,11 +1,14 @@
-/**
- * This file is just a silly example to show everything working in the browser.
- * When you're ready to start on your site, clear the file. Happy hacking!
- **/
+document.getElementById('fetchAccountAddress').onclick = function () {
+  document.getElementById('accountAddress').innerText = "some_address";
+};
 
-import confetti from 'canvas-confetti';
+document.getElementById('sendManifestToExtension').onclick = function () {
+  const manifest = document.getElementById('manifest').value;
 
-confetti.create(document.getElementById('canvas'), {
-  resize: true,
-  useWorker: true,
-})({ particleCount: 200, spread: 200 });
+  document.getElementById('receipt').innerText = manifest;
+};
+
+document.getElementById('fetchComponentState').onclick = function () {
+  const componentAddress = document.getElementById('componentAddress').value;
+  document.getElementById('componentState').innerText = componentAddress;
+};
