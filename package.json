@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "pte-browser-extension-sdk": "^0.1.1",
+    "pte-sdk": "^0.1.1"
+  }
+}
