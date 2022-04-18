@@ -1,7 +1,7 @@
 {
   "name": "pte-browser-extension-sdk",
-  "version": "0.1.0",
-  "description": "This is javascript library for interacting with Babylon public test environment.",
+  "version": "0.1.1",
+  "description": "This is Typescript/Javascript library for interacting with the Babylon PTE browser extension.",
   "main": "out/index.js",
   "scripts": {
     "build": "npx tsc",
