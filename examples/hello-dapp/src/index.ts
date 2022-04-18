@@ -2,22 +2,24 @@ import { DefaultApi } from 'pte-sdk';
 import {
   ActionType,
   sendAction,
-  SignTxSuccess,
   waitForAction,
-  GetAliasSuccess,
+  GetAccountAddress, GetAccountAddressSuccess,
+  SignTransaction, SignTransactionSuccess
 } from 'pte-browser-extension-sdk';
 
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
   // Send request to browser extension
-  sendAction({ type: ActionType.GetAlias, payload: null });
-
-  // Add trigger when a response is received
-  const response = await waitForAction<GetAliasSuccess>(
-    ActionType.SignSuccess
+  sendAction({
+    type: ActionType.GetAccountAddress,
+    payload: null,
+  });
+  const response = await waitForAction<GetAccountAddressSuccess>(
+    ActionType.GetAccountAddressSuccess
   );
+  console.log("Response: " + response);
 
-  document.getElementById('accountAddress').innerText = response.toString();
+  document.getElementById('accountAddress').innerText = response.payload;
 };
 
 document.getElementById('sendManifestToExtension').onclick = async function () {
@@ -26,12 +28,16 @@ document.getElementById('sendManifestToExtension').onclick = async function () {
   console.log("Manifest: " + manifest);
 
   // Send request to browser extension
-  sendAction({ type: ActionType.Sign, payload: manifest });
-  const response = await waitForAction<SignTxSuccess>(
-    ActionType.SignSuccess
+  sendAction({
+    type: ActionType.SignTransaction,
+    payload: manifest,
+  });
+  const response = await waitForAction<SignTransactionSuccess>(
+    ActionType.SignTransactionSuccess
   );
+  console.log("Response: " + response);
 
-  document.getElementById('receipt').innerText = response.toString();
+  document.getElementById('receipt').innerText = response.payload;
 };
 
 document.getElementById('fetchComponentState').onclick = async function () {
