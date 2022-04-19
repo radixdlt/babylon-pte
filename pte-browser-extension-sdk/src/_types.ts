@@ -1,3 +1,5 @@
+import { Receipt } from 'pte-sdk';
+
 /**
  * Represents the type of an action.
  */
@@ -25,7 +27,7 @@ export type GetAccountAddressSuccess = Action<ActionType.GetAccountAddressSucces
 export type GetAccountAddressFailure = Action<ActionType.GetAccountAddressFailure, string>;
 
 export type SignTransaction = Action<ActionType.SignTransaction, string>;
-export type SignTransactionSuccess = Action<ActionType.SignTransactionSuccess, string>;
+export type SignTransactionSuccess = Action<ActionType.SignTransactionSuccess, Receipt>;
 export type SignTransactionFailure = Action<ActionType.SignTransactionFailure, string>;
 
 export type ActionTypes =

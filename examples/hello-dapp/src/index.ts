@@ -3,8 +3,8 @@ import {
   ActionType,
   sendAction,
   waitForAction,
-  GetAccountAddress, GetAccountAddressSuccess,
-  SignTransaction, SignTransactionSuccess
+  GetAccountAddressSuccess, GetAccountAddressFailure,
+  SignTransactionSuccess, SignTransactionFailure
 } from 'pte-browser-extension-sdk';
 
 
@@ -15,7 +15,8 @@ document.getElementById('fetchAccountAddress').onclick = async function () {
     payload: null,
   });
   const response = await waitForAction<GetAccountAddressSuccess>(
-    ActionType.GetAccountAddressSuccess
+    ActionType.GetAccountAddressSuccess,
+    [ActionType.GetAccountAddressFailure]
   );
   console.log("Response: " + response);
 
@@ -33,11 +34,12 @@ document.getElementById('sendManifestToExtension').onclick = async function () {
     payload: manifest,
   });
   const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess
+    ActionType.SignTransactionSuccess,
+    [ActionType.SignTransactionFailure]
   );
   console.log("Response: " + response);
 
-  document.getElementById('receipt').innerText = response.payload;
+  document.getElementById('receipt').innerText = JSON.stringify(response.payload, null, 2);
 };
 
 document.getElementById('fetchComponentState').onclick = async function () {
