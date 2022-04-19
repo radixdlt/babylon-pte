@@ -25,24 +25,24 @@
     <h1>Hello DApp</h1>
 
     <h2>1. Fetch User Account Address</h2>
-
     <p><button id="fetchAccountAddress">Click me</button> to get the account address of the PTE Browser Extension user.</p>
-    
-    <p>Address: <code id="accountAddress"></code></p>
+    <p>Address: <pre id="accountAddress"></pre></p>
 
 
     <h2>2. Submit a Transaction</h2>
-
-    <p><textarea id="manifest" placeholder="Transaction manifest" rows="10" cols="80"></textarea></p>
-
+    <p><textarea id="manifest" placeholder="Transaction manifest" rows="8" cols="60"></textarea></p>
     <p><button id="sendManifestToExtension">Send to PTE Browser Extension</button></p>
+    <p>Receipt:<br><pre id="receipt"></pre></p>
 
-    <p>Receipt:<br><code id="receipt"></code></p>
 
     <h2>3. Retrieve Component State</h2>
-
     <p><input id="componentAddress" placeholder="Component address" style="width: 320px;"> <button id="fetchComponentState">Check</button></p>
+    <p>State:<br><pre id="componentState"></pre></p>
 
-    <p>State:<br><code id="componentState"></code></p>
+
+    <h2>4. Check Transaction</h2>
+    <p><input id="pastTransactionHash" placeholder="Transaction Hash" style="width: 320px;"> <button id="checkTransaction">Check</button></p>
+    <p>Transaction:<br><pre id="pastTransaction"></pre></p>
+    <p>Receipt:<br><pre id="pastReceipt"></pre></p>
   </body>
 </html>

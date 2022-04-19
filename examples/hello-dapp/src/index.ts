@@ -54,3 +54,20 @@ document.getElementById('fetchComponentState').onclick = async function () {
 
   document.getElementById('componentState').innerText = component.state;
 };
+
+document.getElementById('checkTransaction').onclick = async function () {
+  // Read input transaction hash
+  const transactionHash = (<HTMLInputElement>document.getElementById('pastTransactionHash')).value;
+
+  // Retrieve transaction and receipt from PTE service
+  const api = new DefaultApi();
+  const transaction = await api.getTransaction({
+    hash: transactionHash
+  });
+  const receipt = await api.getReceipt({
+    hash: transactionHash
+  });
+
+  document.getElementById('pastTransaction').innerText = JSON.stringify(transaction, null, 2);
+  document.getElementById('pastReceipt').innerText = JSON.stringify(receipt, null, 2);
+};
