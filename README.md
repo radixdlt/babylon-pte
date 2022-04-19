@@ -24,12 +24,12 @@ You can download the CLI from the [latest releases](https://github.com/radixdlt/
 The API specification of the PTE service can be found [here](./pte-api-spec/api.yaml).
 
 
-### Javascript SDKs
+### Typescript SDKs
 
 For DApp developers, three Typescript/Javascript SDKs are now available:
 
 * `pte-sdk` - An SDK for constructing manifest and interacting with PTE service;
-* `pte-wallet-sdk` - An SDK for interacting with PTE browser extension;
+* `pte-browser-extension-sdk` - An SDK for interacting with PTE browser extension;
 * `pte-manifest-compiler` - A library for compiling a manifest into a transaction.
 
 ### DApp Examples

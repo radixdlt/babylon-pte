@@ -14,7 +14,8 @@ import {
 
 async function fetchAccountAddress() {
   sendAction({
-    type: ActionType.GetAccountAddress
+    type: ActionType.GetAccountAddress,
+    payload: "",
   });
   const response = await waitForAction<GetAccountAddressSuccess>(
     ActionType.GetAccountAddressSuccess,

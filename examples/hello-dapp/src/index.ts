@@ -10,15 +10,19 @@ import {
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
   // Send request to browser extension
-  sendAction({
-    type: ActionType.GetAccountAddress,
-    payload: null,
-  });
-  const response = await waitForAction<GetAccountAddressSuccess>(
-    ActionType.GetAccountAddressSuccess,
-    [ActionType.GetAccountAddressFailure]
-  );
-  console.log("Response: " + response);
+  try {
+    sendAction({
+      type: ActionType.GetAccountAddress,
+      payload: "",
+    });
+    const response = await waitForAction<GetAccountAddressSuccess>(
+      ActionType.GetAccountAddressSuccess,
+      [ActionType.GetAccountAddressFailure]
+    );
+    console.log("Response: " + response);
+  } catch (error) {
+    console.error(JSON.stringify(error, null, 2));
+  }
 
   document.getElementById('accountAddress').innerText = response.payload;
 };
@@ -29,15 +33,19 @@ document.getElementById('sendManifestToExtension').onclick = async function () {
   console.log("Manifest: " + manifest);
 
   // Send request to browser extension
-  sendAction({
-    type: ActionType.SignTransaction,
-    payload: manifest,
-  });
-  const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess,
-    [ActionType.SignTransactionFailure]
-  );
-  console.log("Response: " + response);
+  try {
+    sendAction({
+      type: ActionType.SignTransaction,
+      payload: manifest,
+    });
+    const response = await waitForAction<SignTransactionSuccess>(
+      ActionType.SignTransactionSuccess,
+      [ActionType.SignTransactionFailure]
+    );
+    console.log("Response: " + response);
+  } catch (error) {
+    console.error(JSON.stringify(error, null, 2));
+  }
 
   document.getElementById('receipt').innerText = JSON.stringify(response.payload, null, 2);
 };
