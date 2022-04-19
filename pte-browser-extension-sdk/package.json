@@ -1,6 +1,6 @@
 {
   "name": "pte-browser-extension-sdk",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "This is Typescript/Javascript library for interacting with the Babylon PTE browser extension.",
   "main": "out/index.js",
   "scripts": {

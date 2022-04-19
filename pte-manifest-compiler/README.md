@@ -1,6 +1,16 @@
 
 ## PTE Manifest Compiler
 
+### Example Use
+
+```typescript
+import init, { compile_with_nonce } from "pte-manifest-compiler";
+
+await init();
+const transaction = compile_with_nonce(txManifest, BigInt(1));
+console.log(transaction);
+```
+
 ### Build
 
 ```
@@ -17,14 +27,4 @@ wasm-pack test --headless --firefox
 
 ```
 wasm-pack publish --target web
-```
-
-### Example
-
-```typescript
-import init, { compile_with_nonce } from "pte-manifest-compiler";
-
-await init();
-const transaction = compile_with_nonce(txManifest, BigInt(1));
-console.log(transaction);
 ```
