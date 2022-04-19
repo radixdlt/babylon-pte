@@ -20,11 +20,10 @@ document.getElementById('fetchAccountAddress').onclick = async function () {
       [ActionType.GetAccountAddressFailure]
     );
     console.log("Response: " + response);
+    document.getElementById('accountAddress').innerText = response.payload;
   } catch (error) {
     console.error(JSON.stringify(error, null, 2));
   }
-
-  document.getElementById('accountAddress').innerText = response.payload;
 };
 
 document.getElementById('sendManifestToExtension').onclick = async function () {
@@ -43,11 +42,10 @@ document.getElementById('sendManifestToExtension').onclick = async function () {
       [ActionType.SignTransactionFailure]
     );
     console.log("Response: " + response);
+    document.getElementById('receipt').innerText = JSON.stringify(response.payload, null, 2);
   } catch (error) {
     console.error(JSON.stringify(error, null, 2));
   }
-
-  document.getElementById('receipt').innerText = JSON.stringify(response.payload, null, 2);
 };
 
 document.getElementById('fetchComponentState').onclick = async function () {
