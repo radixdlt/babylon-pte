@@ -57,21 +57,14 @@ describe('PTE API tests', function () {
 
     it('Test account creation', async function () {
         const manifest = new ManifestBuilder()
-            .callMethod('020000000000000000000000000000000000000000000000000002', 'free_xrd', [])
-            .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
-            .callFunction('010000000000000000000000000000000000000000000000000003', 'Account', 'new_with_resource',
-                [
-                    'Enum(2u8, Enum(0u8, Enum(0u8, Enum(0u8, NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + testPublicKey + '")))))',
-                    'Bucket("xrd")'
-                ]
-            )
+            .newAccount(testPublicKey)
             .build();
 
         const api = new DefaultApi();
         const nonce = await api.getNonce({ signers: [testPublicKey] });
         const receipt = await api.submitTransaction({
             transaction: {
-                manifest: testManifest,
+                manifest: manifest.toString(),
                 nonce,
                 signatures: [
                 ]
