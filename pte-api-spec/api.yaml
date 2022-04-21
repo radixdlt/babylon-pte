@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Babylon PTE API
   description: Babylon Public Test Environment (PTE) API specification.
-  version: 0.1.11
+  version: 0.1.12
 servers:
   - url: https://pte01.extratools.works/
 paths:
@@ -346,7 +346,7 @@ components:
             $ref: "#/components/schemas/OwnedResource"
       required:
         - blueprint
-        - auth_rules
+        - access_checks
         - state
         - owned_resources
     Resource:
