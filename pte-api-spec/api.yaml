@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Babylon PTE API
   description: Babylon Public Test Environment (PTE) API specification.
-  version: 1.0.0-draft
+  version: 0.1.10
 servers:
   - url: https://pte01.extratools.works/
 paths:
@@ -298,7 +298,7 @@ components:
         - resource_address
         - name
         - symbol
-    AuthRule:
+    MethodRule:
       type: object
       properties:
         name:
@@ -308,6 +308,18 @@ components:
       required:
         - name
         - rule
+    AccessRules:
+      type: object
+      properties:
+        default_rule:
+          $ref: "#/components/schemas/AnyValue"
+        method_rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/MethodRule"
+      required:
+        - default
+        - methods
     Component:
       type: object
       properties:
@@ -321,10 +333,11 @@ components:
           required:
             - package_address
             - blueprint_name
-        auth_rules:
+        access_checks:
           type: array
+          description: A component is associated with a chain of access checks, each configured by a `AccessRules`.
           items:
-            $ref: "#/components/schemas/AuthRule"
+            $ref: "#/components/schemas/AccessRules"
         state:
           $ref: "#/components/schemas/AnyValue"
         owned_resources:

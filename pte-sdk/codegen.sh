@@ -5,6 +5,8 @@ set -e
 
 cd "$(dirname "$0")"
 
+rm -fr src/api
+
 docker run --rm -v "${PWD}/..:/local" openapitools/openapi-generator-cli generate \
     -g typescript-fetch \
     --additional-properties=typescriptThreePlus=true \

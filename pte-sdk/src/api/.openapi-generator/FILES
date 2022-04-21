@@ -2,10 +2,11 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
-models/AuthRule.ts
+models/AccessRules.ts
 models/BadRequest.ts
 models/Component.ts
 models/ComponentBlueprint.ts
+models/MethodRule.ts
 models/Nonce.ts
 models/OwnedResource.ts
 models/Receipt.ts

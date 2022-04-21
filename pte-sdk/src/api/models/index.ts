@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AuthRule';
+export * from './AccessRules';
 export * from './BadRequest';
 export * from './Component';
 export * from './ComponentBlueprint';
+export * from './MethodRule';
 export * from './Nonce';
 export * from './OwnedResource';
 export * from './Receipt';
