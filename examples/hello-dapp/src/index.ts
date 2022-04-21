@@ -1,42 +1,21 @@
 import { DefaultApi } from 'pte-sdk';
-import {
-  ActionType,
-  sendAction,
-  waitForAction,
-  GetAccountAddressSuccess, GetAccountAddressFailure,
-  SignTransactionSuccess, SignTransactionFailure
-} from 'pte-browser-extension-sdk';
-
+import { getAccountAddress, signTransaction } from 'pte-browser-extension-sdk';
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
-  sendAction({
-    type: ActionType.GetAccountAddress,
-    payload: "",
-  });
-  const response = await waitForAction<GetAccountAddressSuccess>(
-    ActionType.GetAccountAddressSuccess,
-    [ActionType.GetAccountAddressFailure]
-  );
-  console.log("Response: " + response);
+  // Retrieve extension user account address
+  const accountAddress = await getAccountAddress();
 
-  document.getElementById('accountAddress').innerText = response.payload;
+  document.getElementById('accountAddress').innerText = accountAddress;
 };
 
 document.getElementById('sendManifestToExtension').onclick = async function () {
   const manifest = (<HTMLInputElement>document.getElementById('manifest')).value;
   console.log("Manifest: " + manifest);
 
-  sendAction({
-    type: ActionType.SignTransaction,
-    payload: manifest,
-  });
-  const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess,
-    [ActionType.SignTransactionFailure]
-  );
-  console.log("Response: " + response);
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
 
-  document.getElementById('receipt').innerText = JSON.stringify(response.payload, null, 2);
+  document.getElementById('receipt').innerText = JSON.stringify(receipt, null, 2);
 };
 
 document.getElementById('fetchComponentState').onclick = async function () {

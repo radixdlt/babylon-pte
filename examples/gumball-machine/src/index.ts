@@ -1,11 +1,5 @@
 import { DefaultApi, ManifestBuilder } from 'pte-sdk';
-import {
-  ActionType,
-  sendAction,
-  waitForAction,
-  GetAccountAddressSuccess, GetAccountAddressFailure,
-  SignTransactionSuccess, SignTransactionFailure
-} from 'pte-browser-extension-sdk';
+import { getAccountAddress, signTransaction } from 'pte-browser-extension-sdk';
 
 // Global states
 let accountAddress = undefined; // User account address
@@ -14,19 +8,9 @@ let componentAddress = undefined; // GumballMachine component address
 let resourceAddress = undefined; // GUM resource address
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
-  // Send request to browser extension
-  sendAction({
-    type: ActionType.GetAccountAddress,
-    payload: "",
-  });
-  const response = await waitForAction<GetAccountAddressSuccess>(
-    ActionType.GetAccountAddressSuccess,
-    [ActionType.GetAccountAddressFailure]
-  );
-  console.log("Response: " + response);
+  // Retrieve extension user account address
+  accountAddress = await getAccountAddress();
 
-  // Update UI
-  accountAddress = response.payload;
   document.getElementById('accountAddress').innerText = accountAddress;
 };
 
@@ -45,19 +29,11 @@ document.getElementById('publishPackage').onclick = async function () {
     .toString();
   console.log("Manifest: " + manifest);
 
-  // Send request to browser extension
-  sendAction({
-    type: ActionType.SignTransaction,
-    payload: manifest,
-  });
-  const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess,
-    [ActionType.SignTransactionFailure]
-  );
-  console.log("Response: " + response);
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
 
   // Update UI
-  packageAddress = response.payload.newPackages[0];
+  packageAddress = receipt.newPackages[0];
   document.getElementById('packageAddress').innerText = packageAddress;
 };
 
@@ -70,20 +46,12 @@ document.getElementById('instantiateComponent').onclick = async function () {
     .toString();
   console.log("Manifest: " + manifest);
 
-  // Send request to browser extension
-  sendAction({
-    type: ActionType.SignTransaction,
-    payload: manifest,
-  });
-  const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess,
-    [ActionType.SignTransactionFailure]
-  );
-  console.log("Response: " + response);
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
 
   // Update UI
-  componentAddress = response.payload.newComponents[0];
-  resourceAddress = response.payload.newResources[0];
+  componentAddress = receipt.newComponents[0];
+  resourceAddress = receipt.newResources[0];
   document.getElementById('componentAddress').innerText = componentAddress;
 };
 
@@ -98,19 +66,10 @@ document.getElementById('buyGumball').onclick = async function () {
     .toString();
   console.log("Manifest: " + manifest);
 
-  // Send request to browser extension
-  sendAction({
-    type: ActionType.SignTransaction,
-    payload: manifest,
-  });
-  const response = await waitForAction<SignTransactionSuccess>(
-    ActionType.SignTransactionSuccess,
-    [ActionType.SignTransactionFailure]
-  );
-  console.log("Response: " + response);
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
 
   // Update UI
-  const receipt = response.payload;
   document.getElementById('receipt').innerText = JSON.stringify(receipt, null, 2);
 };
 
@@ -131,5 +90,5 @@ document.getElementById('checkBalance').onclick = async function () {
     .filter(e => e.resourceAddress == resourceAddress)
     .map(e => e.amount)[0] || '0';
   document.getElementById('machineBalance').innerText = machineComponent.ownedResources
-  .filter(e => e.resourceAddress == resourceAddress).map(e => e.amount)[0];
+    .filter(e => e.resourceAddress == resourceAddress).map(e => e.amount)[0];
 };
