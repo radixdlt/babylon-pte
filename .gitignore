@@ -4,3 +4,4 @@ package-lock.json
 out/
 .DS_Store
 target/
+Cargo.lock
