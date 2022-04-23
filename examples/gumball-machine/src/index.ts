@@ -16,18 +16,14 @@ document.getElementById('fetchAccountAddress').onclick = async function () {
 
 document.getElementById('publishPackage').onclick = async function () {
   // Load the wasm
-  const res = await fetch('./hello_world.wasm');
-  if (!res.ok) {
-    throw new Error("HTTP error " + res.status);
-  }
-  const array = new Uint8Array(await res.arrayBuffer());
+  const response = await fetch('./gumball_machine.wasm');
+  const wasm = new Uint8Array(await response.arrayBuffer());
 
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .publishPackage(array)
+    .publishPackage(wasm)
     .build()
     .toString();
-  console.log("Manifest: " + manifest);
 
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
@@ -44,16 +40,19 @@ document.getElementById('instantiateComponent').onclick = async function () {
     .callFunction(packageAddress, 'GumballMachine', 'instantiate_gumball_machine', ['Decimal("1.0")'])
     .build()
     .toString();
-  console.log("Manifest: " + manifest);
 
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
 
   // Update UI
-  componentAddress = receipt.newComponents[0];
-  resourceAddress = receipt.newResources[0];
-  document.getElementById('componentAddress').innerText = componentAddress;
-};
+  if (receipt.status == 'Success') {
+    componentAddress = receipt.newComponents[0];
+    resourceAddress = receipt.newResources[0];
+    document.getElementById('componentAddress').innerText = componentAddress;
+  } else {
+    document.getElementById('componentAddress').innerText = 'Error: ' + receipt.status;
+  }
+}
 
 
 document.getElementById('buyGumball').onclick = async function () {
@@ -65,7 +64,6 @@ document.getElementById('buyGumball').onclick = async function () {
     .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
     .toString();
-  console.log("Manifest: " + manifest);
 
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
@@ -80,11 +78,9 @@ document.getElementById('checkBalance').onclick = async function () {
   const userComponent = await api.getComponent({
     address: accountAddress
   });
-  console.log(userComponent);
   const machineComponent = await api.getComponent({
     address: componentAddress
   });
-  console.log(machineComponent);
 
   // Update UI
   document.getElementById('userBalance').innerText = userComponent.ownedResources

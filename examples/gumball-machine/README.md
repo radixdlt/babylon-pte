@@ -1,4 +1,4 @@
-# New Project
+# Gumball Machine
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
