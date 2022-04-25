@@ -6,26 +6,26 @@ Babylon Public Test Environment (PTE), a very simple public network simulator th
 
 ### Browser Extension
 
-A proof-of-concept browser extension can be used for accessing the test environment via Chrome Browser.
+PTE Browser Extension is a proof-of-concept Chrome extension thats signs transactions using a local key pair.
 
-You can download a prebuilt extension from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
+You can download the prebuilt binaries from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
 
 
-### RESIM CLI
+### Terminal
 
-This is a special version of `resim` that talks to the PTE service while exposing the same interface.
+PTE Terminal is a command-line tool that connects to the PTE API service while exposing the same interface as `resim`.
 
-You can download the CLI from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
+You can download it from the [latest releases](https://github.com/radixdlt/babylon-pte/releases).
 
 
 ### API Specification
 
-The API specification of the PTE service can be found [here](./pte-api-spec/api.yaml).
+The specification of the PTE API service can be found [here](./pte-api-spec/api.yaml).
 
 
 ### Typescript SDKs
 
-For DApp developers, three Typescript/Javascript SDKs are now available:
+For DApp developers, three Typescript/Javascript SDKs are provided:
 
 * `pte-sdk` - An SDK for constructing manifest and interacting with PTE service;
 * `pte-browser-extension-sdk` - An SDK for interacting with PTE browser extension;
@@ -33,6 +33,6 @@ For DApp developers, three Typescript/Javascript SDKs are now available:
 
 ### DApp Examples
 
-A preliminary DApp example is provided [here](./examples/). 
+Preliminary DApp examples can be provided [here](./examples/). 
 
-You're very welcome to add more by making a pull request.
+Pull requests welcome.
