@@ -1,28 +1,22 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types: [published]
 
 env:
-  # Your oauth token goes here, see link above
   OAUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-  # Repo owner (user id)
   OWNER: radixdlt
-  # Repo name
   EXTENSION_REPO: babylon-poc
 
 jobs:
-  release:
-    name: Create release
+  upload-babylon-poc-artifact:
+    name: Upload babylon-poc artifact
     runs-on: ubuntu-latest
 
     steps:
       - name: Download browser extension artifact
         run: |
-
-          # Concatenate the values together
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.EXTENSION_REPO }}"
 
           # Gets info on latest release, gets first uploaded asset id of a release,
@@ -41,3 +35,56 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "extension.zip"
+
+  publish-pte-sdk:
+    name: Publish pte-sdk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: |
+          cd pte-sdk
+          npm install
+          npm run build
+          npm publish --tag ${{ github.event.release.tag_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+  publish-browser-extension-sdk:
+    name: Publish browser-extension-sdk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: |
+          cd pte-browser-extension-sdk
+          npm install
+          npm run build
+          npm publish --tag ${{ github.event.release.tag_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+  publish-pte-manifest-compiler:
+    name: Publish pte-manifest-compiler
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: jetli/wasm-pack-action@v0.3.0
+        with:
+          version: 'v0.10.2'
+      - run: |
+          cd pte-manifest-compiler
+          wasm-pack build --target web
+          wasm-pack publish --target web --tag ${{ github.event.release.tag_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
