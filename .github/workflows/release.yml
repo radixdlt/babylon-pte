@@ -7,7 +7,7 @@ on:
 
 env:
   # Your oauth token goes here, see link above
-  OAUTH_TOKEN: secrets.GH_TOKEN
+  OAUTH_TOKEN: ${{ secrets.GH_TOKEN }}
   # Repo owner (user id)
   OWNER: radixdlt
   # Repo name
