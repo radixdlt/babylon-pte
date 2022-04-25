@@ -2,8 +2,7 @@
 
 Babylon Public Test Environment (PTE), a very simple public network simulator that will allow publishing of Scrypto blueprints and components along with composition using the new transaction manifest, with simulator tools sufficient to enable first experimentation with “full stack” dApp development including web front-ends
 
-![Overview](./assets/overview.png)
-
+![Overview](./assets/pte-overview.svg)
 
 ### Browser Extension
 
