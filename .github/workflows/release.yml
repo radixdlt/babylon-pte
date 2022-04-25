@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  # Your oauth token goes here, see link above
+  OAUTH_TOKEN: secrets.GH_TOKEN
+  # Repo owner (user id)
+  OWNER: radixdlt
+  # Repo name
+  EXTENSION_REPO: babylon-poc
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download browser extension artifact
+        run: |
+
+          # Concatenate the values together
+          API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.EXTENSION_REPO }}"
+
+          # Gets info on latest release, gets first uploaded asset id of a release,
+          # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
+          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+
+          # curl:
+          # -O: Use name provided from endpoint
+          # -J: "Content Disposition" header, in this case "attachment"
+          # -L: Follow links, we actually get forwarded in this request
+          # -H "Accept: application/octet-stream": Tells api we want to dl the full binary
+          curl -O -J -L -H "Accept: application/octet-stream" "$API_URL/releases/assets/$ASSET_ID"
+
+      # Uses tag that triggered the workflow as name for the release
+      # https://github.com/ncipollo/release-action
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "extension.zip"
