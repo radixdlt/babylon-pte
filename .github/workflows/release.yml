@@ -34,7 +34,8 @@ jobs:
       # https://github.com/ncipollo/release-action
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "extension.zip"
+          artifacts: "extension-${{ github.event.release.tag_name }}.zip"
+          allowUpdates: true
 
   publish-pte-sdk:
     name: Publish pte-sdk
