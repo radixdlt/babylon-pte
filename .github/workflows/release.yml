@@ -3,15 +3,19 @@ name: Release
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - fix-release-workflow-01
 
 env:
   OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   OWNER: radixdlt
   EXTENSION_REPO: babylon-poc
+  PTE_BINARIES_REPO: resim-server
 
 jobs:
-  upload-babylon-poc-artifact:
-    name: Upload babylon-poc artifact
+  upload-babylon-browser-extension-artifact:
+    name: Upload babylon browser extension artifact
     runs-on: ubuntu-latest
 
     steps:
@@ -35,6 +39,34 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "extension.zip"
+          allowUpdates: true
+
+  upload-pte-terminal-binaries:
+    name: Upload babylon browser extension artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download browser extension artifact
+        run: |
+          API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.PTE_BINARIES_REPO }}"
+
+          # Gets info on latest release, gets first uploaded asset id of a release,
+          # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
+          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+
+          # curl:
+          # -O: Use name provided from endpoint
+          # -J: "Content Disposition" header, in this case "attachment"
+          # -L: Follow links, we actually get forwarded in this request
+          # -H "Accept: application/octet-stream": Tells api we want to dl the full binary
+          curl -O -J -L -H "Accept: application/octet-stream" "$API_URL/releases/assets/$ASSET_ID"
+
+      # Uses tag that triggered the workflow as name for the release
+      # https://github.com/ncipollo/release-action
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "resim-client.*"
+          allowUpdates: true
 
   publish-pte-sdk:
     name: Publish pte-sdk
