@@ -2,9 +2,9 @@ openapi: 3.0.0
 info:
   title: Babylon PTE API
   description: Babylon Public Test Environment (PTE) API specification.
-  version: 0.1.13
+  version: 0.1.14
 servers:
-  - url: https://pte01.extratools.works/
+  - url: https://pte01.radixdlt.com/
 paths:
   /packages:
     get:
