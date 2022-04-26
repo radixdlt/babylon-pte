@@ -3,10 +3,6 @@ name: Release
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - fix-release-workflow-01
-
 env:
   OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   OWNER: radixdlt
