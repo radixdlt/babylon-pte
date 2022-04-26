@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Babylon PTE API
   description: Babylon Public Test Environment (PTE) API specification.
-  version: 0.1.14
+  version: 0.1.15
 servers:
   - url: https://pte01.radixdlt.com/
 paths:
@@ -123,6 +123,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BadRequest"
+  /epoch:
+    get:
+      summary: Get the current epoch
+      operationId: getEpoch
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Epoch"
   /receipt/{hash}:
     get:
       summary: Retrieve a receipt
@@ -231,6 +242,14 @@ components:
           format: int64
       required:
         - value
+    Epoch:
+      type: object
+      properties:
+        epoch:
+          type: integer
+          format: int64
+      required:
+        - epoch
     Transaction:
       type: object
       properties:

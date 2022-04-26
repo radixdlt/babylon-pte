@@ -6,6 +6,7 @@ models/AccessRules.ts
 models/BadRequest.ts
 models/Component.ts
 models/ComponentBlueprint.ts
+models/Epoch.ts
 models/MethodRule.ts
 models/Nonce.ts
 models/OwnedResource.ts

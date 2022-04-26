@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ResourceMetadata
+ * @interface Epoch
  */
-export interface ResourceMetadata {
+export interface Epoch {
     /**
      * 
-     * @type {string}
-     * @memberof ResourceMetadata
+     * @type {number}
+     * @memberof Epoch
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResourceMetadata
-     */
-    value: string;
+    epoch: number;
 }
 
-export function ResourceMetadataFromJSON(json: any): ResourceMetadata {
-    return ResourceMetadataFromJSONTyped(json, false);
+export function EpochFromJSON(json: any): Epoch {
+    return EpochFromJSONTyped(json, false);
 }
 
-export function ResourceMetadataFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourceMetadata {
+export function EpochFromJSONTyped(json: any, ignoreDiscriminator: boolean): Epoch {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
-        'value': json['value'],
+        'epoch': json['epoch'],
     };
 }
 
-export function ResourceMetadataToJSON(value?: ResourceMetadata | null): any {
+export function EpochToJSON(value?: Epoch | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function ResourceMetadataToJSON(value?: ResourceMetadata | null): any {
     }
     return {
         
-        'name': value.name,
-        'value': value.value,
+        'epoch': value.epoch,
     };
 }
 
