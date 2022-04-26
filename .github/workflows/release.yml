@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  OAUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+  OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   OWNER: radixdlt
   EXTENSION_REPO: babylon-poc
 
