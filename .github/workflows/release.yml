@@ -65,7 +65,7 @@ jobs:
       # https://github.com/ncipollo/release-action
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "resim-client.*"
+          artifacts: "resim-client*"
           allowUpdates: true
 
   publish-pte-sdk:
