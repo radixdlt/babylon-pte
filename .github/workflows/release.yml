@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
 env:
-  OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  OAUTH_TOKEN: ${{ secrets.GH_TOKEN }}
   OWNER: radixdlt
   EXTENSION_REPO: babylon-poc
   PTE_BINARIES_REPO: resim-server
