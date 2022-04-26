@@ -17,7 +17,6 @@ jobs:
   upload-babylon-browser-extension-artifact:
     name: Upload babylon browser extension artifact
     runs-on: ubuntu-latest
-
     steps:
       - name: Download browser extension artifact
         run: |
