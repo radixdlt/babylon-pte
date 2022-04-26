@@ -17,6 +17,9 @@ jobs:
       - name: Download browser extension artifact
         run: |
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.EXTENSION_REPO }}"
+          
+          #debugging
+          curl $API_URL/releases/latest | jq -r
 
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
@@ -37,13 +40,16 @@ jobs:
           allowUpdates: true
 
   upload-pte-terminal-binaries:
-    name: Upload babylon browser extension artifact
+    name: Upload PTE terminal binaries
     runs-on: ubuntu-latest
     steps:
       - name: Download browser extension artifact
         run: |
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.PTE_BINARIES_REPO }}"
 
+          #debugging
+          curl $API_URL/releases/latest | jq -r
+          
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
           ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
