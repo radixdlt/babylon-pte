@@ -20,7 +20,7 @@ jobs:
 
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
-          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+          ASSET_ID=$(curl -s $API_URL/releases/latest | jq -r '.assets[0].id')
 
           # curl:
           # -O: Use name provided from endpoint
@@ -45,18 +45,21 @@ jobs:
         include:
           - target: x86_64-pc-windows-gnu
             archive: zip
+            id: 0
           - target: x86_64-unknown-linux-musl
             archive: tar.gz
+            id: 1
           - target: x86_64-apple-darwin
             archive: zip
+            id: 2
     steps:
-      - name: Download browser extension artifact
+      - name: Download PTE terminal binaries ${{ matrix.target }}
         run: |
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.PTE_BINARIES_REPO }}"
  
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
-          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+          ASSET_ID=$(curl -s $API_URL/releases/latest | jq -r --arg id ${{ matrix.id }} '.assets[$id].id')
 
           # curl:
           # -O: Use name provided from endpoint
