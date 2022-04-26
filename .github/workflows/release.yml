@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
 env:
-  OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  OAUTH_TOKEN: ${{ secrets.GH_TOKEN }}
   OWNER: radixdlt
   EXTENSION_REPO: babylon-poc
   PTE_BINARIES_REPO: resim-server
@@ -17,13 +17,10 @@ jobs:
       - name: Download browser extension artifact
         run: |
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.EXTENSION_REPO }}"
-          
-          #debugging
-          curl $API_URL/releases/latest | jq -r
 
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
-          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+          ASSET_ID=$(curl -s $API_URL/releases/latest | jq -r '.assets[0].id')
 
           # curl:
           # -O: Use name provided from endpoint
@@ -42,17 +39,27 @@ jobs:
   upload-pte-terminal-binaries:
     name: Upload PTE terminal binaries
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-gnu
+            archive: zip
+            id: 1
+          - target: x86_64-unknown-linux-musl
+            archive: tar.gz
+            id: 2
+          - target: x86_64-apple-darwin
+            archive: zip
+            id: 0
     steps:
-      - name: Download browser extension artifact
+      - name: Download PTE terminal binaries ${{ matrix.target }}
         run: |
           API_URL="https://${{ env.OAUTH_TOKEN }}:@api.github.com/repos/${{ env.OWNER }}/${{ env.PTE_BINARIES_REPO }}"
-
-          #debugging
-          curl $API_URL/releases/latest | jq -r
-          
+ 
           # Gets info on latest release, gets first uploaded asset id of a release,
           # More info on jq being used to parse json: https://stedolan.github.io/jq/tutorial/
-          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[0].id')
+          ASSET_ID=$(curl -s $API_URL/releases/latest | jq -r --arg id ${{ matrix.id}} '.assets[$id|tonumber].id')
 
           # curl:
           # -O: Use name provided from endpoint
@@ -65,7 +72,7 @@ jobs:
       # https://github.com/ncipollo/release-action
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "resim-client.*"
+          artifacts: "resim-client-${{ matrix.target }}*"
           allowUpdates: true
 
   publish-pte-sdk:
