@@ -6,9 +6,9 @@ import { ManifestBuilder } from './manifest';
 const systemComponent = '020000000000000000000000000000000000000000000000000002';
 const radixToken = '030000000000000000000000000000000000000000000000000004';
 const testManifest = 'CLEAR_AUTH_ZONE;';
-const testNonce = 1796006201;
-const testPublicKey = '042b10770b3acba7a92916d3349fd0f219b79a9939ed2f17cdb8c2c4543a4fd3e7e86659a90ad4e078d7e93fdbecca41b4a0a57f326db4b7691103c53776336f0e';
-const testSignature = 'b277d4e4ff8d5fcc8beb0ba4ac60f4d52d42718d6b8442cd552bce11256a876f702925d4f23f5d444434f855faac2e9da6d78921a603bfa299029608e3b59e5c';
+const testNonce = 3880673815;
+const testPublicKey = '043faf148413e171e2089012faacc0577d7a29aeddf25207bcf04a8768f5fe834f66585958e6ff091d1df7505c18c900e6a58b0631f98d1aa7e28630481e28e617';
+const testSignature = 'aab1f69d997c5c3f27c30d9b8a97aa74c0797f41b0c5ee4e5c2ab1edfe1e9ce8114ad35f84c9bd7de1a4a0370a1bca5dea668ae554482232fd885d3f13458085';
 
 describe('PTE API tests', function () {
     it('Test /component', async function () {
