@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raidxdlt/babylon-pte.git"
+    "url": "git+https://github.com/radixdlt/babylon-pte.git"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/raidxdlt/babylon-pte/issues"
+    "url": "https://github.com/radixdlt/babylon-pte/issues"
   },
-  "homepage": "https://github.com/raidxdlt/babylon-pte#README",
+  "homepage": "https://github.com/radixdlt/babylon-pte#README",
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^14.17.7",
