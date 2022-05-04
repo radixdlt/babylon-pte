@@ -97,6 +97,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BadRequest"
+  /non-fungible/{address}:
+    get:
+      summary: Get info about a specific non-fungible unit
+      operationId: getNonFungible
+      parameters:
+        - name: address
+          description: The non-fungible address
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NonFungible"
+        "404":
+          description: Non-fungible not found
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
   /nonce:
     get:
       summary: Get the nonce of a signer set
@@ -312,6 +338,10 @@ components:
           type: string
         symbol:
           type: string
+        non_fungible_ids:
+          type: array
+          items:
+            type: string
       required:
         - amount
         - resource_address
@@ -394,3 +424,17 @@ components:
         - divisibility
         - metadata
         - total_supply
+    NonFungible:
+      type: object
+      properties:
+        resource_address:
+          type: string
+        immutable_data:
+          $ref: "#/components/schemas/AnyValue"
+        mutable_data:
+          $ref: "#/components/schemas/AnyValue"
+      required:
+        - resource_address
+        - immutable_data
+        - mutable_data
+
