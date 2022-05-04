@@ -8,6 +8,7 @@ models/Component.ts
 models/ComponentBlueprint.ts
 models/Epoch.ts
 models/MethodRule.ts
+models/NonFungible.ts
 models/Nonce.ts
 models/OwnedResource.ts
 models/Receipt.ts

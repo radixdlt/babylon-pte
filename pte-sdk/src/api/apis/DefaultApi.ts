@@ -24,6 +24,9 @@ import {
     Epoch,
     EpochFromJSON,
     EpochToJSON,
+    NonFungible,
+    NonFungibleFromJSON,
+    NonFungibleToJSON,
     Nonce,
     NonceFromJSON,
     NonceToJSON,
@@ -39,6 +42,10 @@ import {
 } from '../models';
 
 export interface GetComponentRequest {
+    address: string;
+}
+
+export interface GetNonFungibleRequest {
     address: string;
 }
 
@@ -120,6 +127,36 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getEpoch(initOverrides?: RequestInit): Promise<Epoch> {
         const response = await this.getEpochRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get info about a specific non-fungible unit
+     */
+    async getNonFungibleRaw(requestParameters: GetNonFungibleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<NonFungible>> {
+        if (requestParameters.address === null || requestParameters.address === undefined) {
+            throw new runtime.RequiredError('address','Required parameter requestParameters.address was null or undefined when calling getNonFungible.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/non-fungible/{address}`.replace(`{${"address"}}`, encodeURIComponent(String(requestParameters.address))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => NonFungibleFromJSON(jsonValue));
+    }
+
+    /**
+     * Get info about a specific non-fungible unit
+     */
+    async getNonFungible(requestParameters: GetNonFungibleRequest, initOverrides?: RequestInit): Promise<NonFungible> {
+        const response = await this.getNonFungibleRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

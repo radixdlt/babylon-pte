@@ -43,6 +43,12 @@ export interface OwnedResource {
      * @memberof OwnedResource
      */
     symbol: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OwnedResource
+     */
+    nonFungibleIds?: Array<string>;
 }
 
 export function OwnedResourceFromJSON(json: any): OwnedResource {
@@ -59,6 +65,7 @@ export function OwnedResourceFromJSONTyped(json: any, ignoreDiscriminator: boole
         'resourceAddress': json['resource_address'],
         'name': json['name'],
         'symbol': json['symbol'],
+        'nonFungibleIds': !exists(json, 'non_fungible_ids') ? undefined : json['non_fungible_ids'],
     };
 }
 
@@ -75,6 +82,7 @@ export function OwnedResourceToJSON(value?: OwnedResource | null): any {
         'resource_address': value.resourceAddress,
         'name': value.name,
         'symbol': value.symbol,
+        'non_fungible_ids': value.nonFungibleIds,
     };
 }
 
