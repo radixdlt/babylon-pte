@@ -1,6 +1,6 @@
 {
   "name": "pte-sdk",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "This is Typescript/Javascript library for accessing the Babylon Public Test Environment (PTE).",
   "main": "out/index.js",
   "scripts": {
