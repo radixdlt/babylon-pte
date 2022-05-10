@@ -7,6 +7,24 @@ let packageAddress = undefined; // GumballMachine package address
 let componentAddress = undefined; // GumballMachine component address
 let resourceAddress = undefined; // GUM resource address
 
+document.getElementById('getTemperature').onclick = async function () {
+  // Construct manifest
+  const manifest = new ManifestBuilder()
+    .callMethod(componentAddress, 'get_temperature', [])
+    .build()
+    .toString();
+
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
+
+  // Update UI
+  document.getElementById('temperature').innerText = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
+};
+
 document.getElementById('fetchAccountAddress').onclick = async function () {
   // Retrieve extension user account address
   accountAddress = await getAccountAddress();
@@ -33,11 +51,15 @@ document.getElementById('publishPackage').onclick = async function () {
   document.getElementById('packageAddress').innerText = packageAddress;
 };
 
-
 document.getElementById('instantiateComponent').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .callFunction(packageAddress, 'GumballMachine', 'instantiate_gumball_machine', ['Decimal("1.0")'])
+    .callFunction(
+      packageAddress,
+      'GumballMachine',
+      'instantiate_gumball_machine',
+      ['Decimal("1.0")'],
+    )
     .build()
     .toString();
 
@@ -50,16 +72,23 @@ document.getElementById('instantiateComponent').onclick = async function () {
     resourceAddress = receipt.newResources[0];
     document.getElementById('componentAddress').innerText = componentAddress;
   } else {
-    document.getElementById('componentAddress').innerText = 'Error: ' + receipt.status;
+    document.getElementById('componentAddress').innerText =
+      'Error: ' + receipt.status;
   }
-}
-
+};
 
 document.getElementById('buyGumball').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .withdrawFromAccountByAmount(accountAddress, 1, '030000000000000000000000000000000000000000000000000004')
-    .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
+    .withdrawFromAccountByAmount(
+      accountAddress,
+      1,
+      '030000000000000000000000000000000000000000000000000004',
+    )
+    .takeFromWorktop(
+      '030000000000000000000000000000000000000000000000000004',
+      'xrd',
+    )
     .callMethod(componentAddress, 'buy_gumball', ['Bucket("xrd")'])
     .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
@@ -69,23 +98,30 @@ document.getElementById('buyGumball').onclick = async function () {
   const receipt = await signTransaction(manifest);
 
   // Update UI
-  document.getElementById('receipt').innerText = JSON.stringify(receipt, null, 2);
+  document.getElementById('receipt').innerText = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
 };
 
 document.getElementById('checkBalance').onclick = async function () {
   // Retrieve component info from PTE service
   const api = new DefaultApi();
   const userComponent = await api.getComponent({
-    address: accountAddress
+    address: accountAddress,
   });
   const machineComponent = await api.getComponent({
-    address: componentAddress
+    address: componentAddress,
   });
 
   // Update UI
-  document.getElementById('userBalance').innerText = userComponent.ownedResources
-    .filter(e => e.resourceAddress == resourceAddress)
-    .map(e => e.amount)[0] || '0';
-  document.getElementById('machineBalance').innerText = machineComponent.ownedResources
-    .filter(e => e.resourceAddress == resourceAddress).map(e => e.amount)[0];
+  document.getElementById('userBalance').innerText =
+    userComponent.ownedResources
+      .filter((e) => e.resourceAddress == resourceAddress)
+      .map((e) => e.amount)[0] || '0';
+  document.getElementById('machineBalance').innerText =
+    machineComponent.ownedResources
+      .filter((e) => e.resourceAddress == resourceAddress)
+      .map((e) => e.amount)[0];
 };

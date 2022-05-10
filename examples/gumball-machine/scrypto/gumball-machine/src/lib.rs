@@ -5,6 +5,7 @@ blueprint! {
         gumballs: Vault,
         collected_xrd: Vault,
         price: Decimal,
+        temperature: Decimal,
     }
 
     impl GumballMachine {
@@ -23,6 +24,7 @@ blueprint! {
                 gumballs: Vault::with_bucket(bucket_of_gumballs),
                 collected_xrd: Vault::new(RADIX_TOKEN),
                 price: price,
+                temperature: dec!(15)
             }
             .instantiate()
             .globalize()
@@ -31,6 +33,15 @@ blueprint! {
         pub fn get_price(&self) -> Decimal {
             self.price
         }
+
+        pub fn get_temperature(&self) -> Decimal {
+            self.temperature
+        }
+
+        pub fn set_temperature(&mut self, new_temperature: Decimal)  {
+            self.temperature = new_temperature;
+        }
+
 
         pub fn buy_gumball(&mut self, mut payment: Bucket) -> (Bucket, Bucket) {
             // take our price in XRD out of the payment
