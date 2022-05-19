@@ -58,7 +58,7 @@ document.getElementById('instantiateComponent').onclick = async function () {
 document.getElementById('update_time').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .callMethod(componentAddress, 'update_time', ['String("Test")'])
+    .callMethod(componentAddress, 'update_time', ['"Test"'])
     .build()
     .toString();
 
