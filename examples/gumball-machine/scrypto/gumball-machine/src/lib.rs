@@ -1,49 +1,79 @@
+
 use scrypto::prelude::*;
 
+// Oracle used to bring real-world time data onto the chain
 blueprint! {
-    struct GumballMachine {
-        gumballs: Vault,
-        collected_xrd: Vault,
-        price: Decimal,
+    struct TimeOracle {
+        // fee that is collected every time a user wants to update the timestamp
+        fee_vault: Vault,
+        // the adming badge that is used to empty the fee_vault
+        admin_badge_def: ResourceAddress,
+        // the time string which gets updated every time update_time() is called
+        time_string: String, 
+        //the counter that is used to check if the next update_time() is paid for 
+        paid_requests: Decimal,  
+
     }
 
-    impl GumballMachine {
-        // given a price in XRD, creates a ready-to-use gumball machine
-        pub fn instantiate_gumball_machine(price: Decimal) -> ComponentAddress {
-            // create a new Gumball resource, with a fixed quantity of 100
-            let bucket_of_gumballs = ResourceBuilder::new_fungible()
-                .divisibility(DIVISIBILITY_MAXIMUM)
-                .metadata("name", "Gumball")
-                .metadata("symbol", "GUM")
-                .metadata("description", "A delicious gumball")
-                .initial_supply(100);
+    impl TimeOracle {
+        // This is a function, and can be called directly on the blueprint once deployed
+        pub fn instantiate_time_oracle() -> (ComponentAddress, Bucket) {
+         
+        // Create the admin badges
+        let badges: Bucket = ResourceBuilder::new_fungible()
+        .divisibility(DIVISIBILITY_NONE)
+        .metadata("name", "Admin Badge")
+        .initial_supply(dec!(1)); 
 
-            // populate a GumballMachine struct and instantiate a new component
-            Self {
-                gumballs: Vault::with_bucket(bucket_of_gumballs),
-                collected_xrd: Vault::new(RADIX_TOKEN),
-                price: price,
+            // Instantiate a Hello component, populating its vault with our supply of 1000 HelloToken
+            let component = Self {
+                fee_vault: Vault::new(RADIX_TOKEN),
+                admin_badge_def: badges.resource_address(),
+                time_string: String::new(),
+                paid_requests: dec!(0),
             }
-            .instantiate()
-            .globalize()
+            .instantiate();
+
+            // Define the access rules for this blueprint.
+        let access_rules = AccessRules::new()
+        .method("collect_fees", rule!(require(badges.resource_address()))).default(rule!(allow_all));
+
+  
+        // Return the component and the badges
+        (component.add_access_check(access_rules).globalize(), badges)
+
         }
 
-        pub fn get_price(&self) -> Decimal {
-            self.price
+        // allows users to pay for time updates
+        pub fn pay_for_update_time(&mut self, mut payment: Bucket) -> Bucket {
+            // Put 1 (xrd) in the fee vault 
+            self.fee_vault.put(payment.take(dec!(1)));
+            // increase the number of outstanding paid_requests
+            self.paid_requests = self.paid_requests + dec!(1);
+            // returns bucket of xrd if too much was paid 
+            payment
         }
 
-        pub fn buy_gumball(&mut self, mut payment: Bucket) -> (Bucket, Bucket) {
-            // take our price in XRD out of the payment
-            // if the caller has sent too few, or sent something other than XRD, they'll get a runtime error
-            let our_share = payment.take(self.price);
-            self.collected_xrd.put(our_share);
-
-            // we could have simplified the above into a single line, like so:
-            // self.collected_xrd.put(payment.take(self.price));
-
-            // return a tuple containing a gumball, plus whatever change is left on the input payment (if any)
-            // if we're out of gumballs to give, we'll see a runtime error when we try to grab one
-            (self.gumballs.take(1), payment)
+        // Updates the time with the help of an off-chain API and the frontend build with he frontend sdk
+        pub fn update_time(&mut self, new_time: String){
+            // Check that there is at least one request that is paid for
+            assert!(self.paid_requests > dec!(1), "Need to pay for request first");
+            //Decrease counter 
+            self.paid_requests -= 1;
+            //Updates the time 
+            self.time_string = new_time;
         }
+
+        // returns the last time_string 
+        pub fn get_time(&self) -> String {
+           let time = self.time_string.clone();
+           time
+        }
+
+        // collects fees. Can only be called by component owner (has admin_badge)
+        pub fn collect_fees(&mut self){
+            self.fee_vault.take_all();
+        }
+    
     }
 }

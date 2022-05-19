@@ -2,9 +2,9 @@ import { DefaultApi, ManifestBuilder } from 'pte-sdk';
 import { getAccountAddress, signTransaction } from 'pte-browser-extension-sdk';
 
 // Global states
-let accountAddress = undefined; // User account address
-let packageAddress = undefined; // GumballMachine package address
-let componentAddress = undefined; // GumballMachine component address
+let accountAddress = '029451391191a5f3692b0ed9a0d209f3010cb11e65cfa0c2c669af'; // User account address
+let packageAddress = '01804fc985a5eb16748de1e25a882abf8bb50163b962af0b0944fc'; // GumballMachine package address
+let componentAddress = '0221d31cf395377e29ddd2bac1142560b3f738a89f772b7f2c7480'; // GumballMachine component address
 let resourceAddress = undefined; // GUM resource address
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
@@ -33,11 +33,11 @@ document.getElementById('publishPackage').onclick = async function () {
   document.getElementById('packageAddress').innerText = packageAddress;
 };
 
-
 document.getElementById('instantiateComponent').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .callFunction(packageAddress, 'GumballMachine', 'instantiate_gumball_machine', ['Decimal("1.0")'])
+    .callFunction(packageAddress, 'TimeOracle', 'instantiate_time_oracle', [])
+    .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
     .toString();
 
@@ -50,17 +50,44 @@ document.getElementById('instantiateComponent').onclick = async function () {
     resourceAddress = receipt.newResources[0];
     document.getElementById('componentAddress').innerText = componentAddress;
   } else {
-    document.getElementById('componentAddress').innerText = 'Error: ' + receipt.status;
+    document.getElementById('componentAddress').innerText =
+      'Error: ' + receipt.status;
   }
-}
+};
 
-
-document.getElementById('buyGumball').onclick = async function () {
+document.getElementById('update_time').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .withdrawFromAccountByAmount(accountAddress, 1, '030000000000000000000000000000000000000000000000000004')
-    .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
-    .callMethod(componentAddress, 'buy_gumball', ['Bucket("xrd")'])
+    .callMethod(componentAddress, 'update_time', ['String("Test")'])
+    .build()
+    .toString();
+
+  console.log(manifest);
+
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
+
+  // Update UI
+  document.getElementById('receipt2').innerText = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
+};
+
+document.getElementById('pay_for_update_time').onclick = async function () {
+  // Construct manifest
+  const manifest = new ManifestBuilder()
+    .withdrawFromAccountByAmount(
+      accountAddress,
+      1,
+      '030000000000000000000000000000000000000000000000000004',
+    )
+    .takeFromWorktop(
+      '030000000000000000000000000000000000000000000000000004',
+      'xrd',
+    )
+    .callMethod(componentAddress, 'pay_for_update_time', ['Bucket("xrd")'])
     .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
     .toString();
@@ -69,23 +96,30 @@ document.getElementById('buyGumball').onclick = async function () {
   const receipt = await signTransaction(manifest);
 
   // Update UI
-  document.getElementById('receipt').innerText = JSON.stringify(receipt, null, 2);
+  document.getElementById('receipt').innerText = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
 };
 
 document.getElementById('checkBalance').onclick = async function () {
   // Retrieve component info from PTE service
   const api = new DefaultApi();
   const userComponent = await api.getComponent({
-    address: accountAddress
+    address: accountAddress,
   });
   const machineComponent = await api.getComponent({
-    address: componentAddress
+    address: componentAddress,
   });
 
   // Update UI
-  document.getElementById('userBalance').innerText = userComponent.ownedResources
-    .filter(e => e.resourceAddress == resourceAddress)
-    .map(e => e.amount)[0] || '0';
-  document.getElementById('machineBalance').innerText = machineComponent.ownedResources
-    .filter(e => e.resourceAddress == resourceAddress).map(e => e.amount)[0];
+  document.getElementById('userBalance').innerText =
+    userComponent.ownedResources
+      .filter((e) => e.resourceAddress == resourceAddress)
+      .map((e) => e.amount)[0] || '0';
+  document.getElementById('machineBalance').innerText =
+    machineComponent.ownedResources
+      .filter((e) => e.resourceAddress == resourceAddress)
+      .map((e) => e.amount)[0];
 };
