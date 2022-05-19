@@ -75,6 +75,26 @@ document.getElementById('update_time').onclick = async function () {
   );
 };
 
+document.getElementById('get_time').onclick = async function () {
+  // Construct manifest
+  const manifest = new ManifestBuilder()
+    .callMethod(componentAddress, 'get_time', [])
+    .build()
+    .toString();
+
+  console.log(manifest);
+
+  // Send manifest to extension for signing
+  const receipt = await signTransaction(manifest);
+
+  // Update UI
+  document.getElementById('receipt3').innerText = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
+};
+
 document.getElementById('pay_for_update_time').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
