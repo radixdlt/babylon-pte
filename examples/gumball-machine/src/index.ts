@@ -2,9 +2,9 @@ import { DefaultApi, ManifestBuilder } from 'pte-sdk';
 import { getAccountAddress, signTransaction } from 'pte-browser-extension-sdk';
 
 // Global states
-let accountAddress = '029451391191a5f3692b0ed9a0d209f3010cb11e65cfa0c2c669af'; // User account address
-let packageAddress = '01804fc985a5eb16748de1e25a882abf8bb50163b962af0b0944fc'; // GumballMachine package address
-let componentAddress = '0221d31cf395377e29ddd2bac1142560b3f738a89f772b7f2c7480'; // GumballMachine component address
+let accountAddress = undefined; // User account address
+let packageAddress = '01f23d3f59d287993ebb6a195b65a2cd8bd5d353d1aef454c11767'; // GumballMachine package address
+let componentAddress = undefined; // GumballMachine component address
 let resourceAddress = undefined; // GUM resource address
 
 document.getElementById('fetchAccountAddress').onclick = async function () {
@@ -40,12 +40,14 @@ document.getElementById('instantiateComponent').onclick = async function () {
     .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
     .toString();
-
+  console.log('Test1');
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
+  console.log(receipt);
 
   // Update UI
   if (receipt.status == 'Success') {
+    console.log('Test3');
     componentAddress = receipt.newComponents[0];
     resourceAddress = receipt.newResources[0];
     document.getElementById('componentAddress').innerText = componentAddress;
@@ -56,6 +58,11 @@ document.getElementById('instantiateComponent').onclick = async function () {
 };
 
 document.getElementById('update_time').onclick = async function () {
+  // API CALL to get the timestring
+  const response = await fetch('http://worldtimeapi.org/api/timezone/Europe');
+
+  console.log(response);
+
   // Construct manifest
   const manifest = new ManifestBuilder()
     .callMethod(componentAddress, 'update_time', ['"Test"'])
