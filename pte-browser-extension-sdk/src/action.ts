@@ -13,17 +13,17 @@ export const waitForAction = async <SuccessType extends ActionTypes>(
   errorTypes?: ActionType[]
 ): Promise<SuccessType> =>
   new Promise((resolve, reject) => {
-    window.addEventListener(
-      "radix#chromeExtension#receive",
-      (event) => {
-        const { action } = (event as CustomEvent<MessageStoreItem<ActionTypes>>)
-          .detail;
+    let listener = function(event){
+      const { action } = (event as CustomEvent<MessageStoreItem<ActionTypes>>)
+        .detail;
 
-        if (action.type === successType) resolve(action as SuccessType);
-        else if (errorTypes?.includes(action.type)) reject(action);
-      },
-      {
-        once: true,
-      }
-    );
+      if (action.type === successType) {
+        window.removeEventListener("radix#chromeExtension#receive", listener);
+        resolve(action as SuccessType);
+      } else if (errorTypes?.includes(action.type)) {
+        window.removeEventListener("radix#chromeExtension#receive", listener);
+        reject(action);
+      } else console.log("MESSAGE IGNORED !", event);
+    }
+    window.addEventListener("radix#chromeExtension#receive", listener);
   });
