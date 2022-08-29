@@ -356,11 +356,11 @@ export class ManifestBuilder {
      * @returns 
      */
     newAccount(publicKey: String): ManifestBuilder {
-        const auth = 'Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("030000000000000000000000000000000000000000000000000005' + publicKey + '")))))';
+        const auth = 'Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("03000000000000000000000000000000000000000000000000000002300721000000' + publicKey + '")))))';
 
-        return this.callMethod('020000000000000000000000000000000000000000000000000002', 'free_xrd', [])
-            .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
-            .callFunction('010000000000000000000000000000000000000000000000000003', 'Account', 'new_with_resource', [auth, 'Bucket("xrd")']);
+        return this.callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'free_xrd', [])
+            .takeFromWorktop('resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag', 'xrd')
+            .callFunction('package_sim1qyqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpsuluv44', 'Account', 'new_with_resource', [auth, 'Bucket("xrd")']);
     }
 
     /**

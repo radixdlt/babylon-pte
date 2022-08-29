@@ -3,12 +3,12 @@ import "isomorphic-fetch";
 import { DefaultApi } from './api';
 import { ManifestBuilder } from './manifest';
 
-const systemComponent = '020000000000000000000000000000000000000000000000000002';
-const radixToken = '030000000000000000000000000000000000000000000000000004';
+const systemComponent = 'system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n';
+const radixToken = 'resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag';
 const testManifest = 'CLEAR_AUTH_ZONE;';
 const testNonce = 3880673815;
-const testPublicKey = '043faf148413e171e2089012faacc0577d7a29aeddf25207bcf04a8768f5fe834f66585958e6ff091d1df7505c18c900e6a58b0631f98d1aa7e28630481e28e617';
-const testSignature = 'aab1f69d997c5c3f27c30d9b8a97aa74c0797f41b0c5ee4e5c2ab1edfe1e9ce8114ad35f84c9bd7de1a4a0370a1bca5dea668ae554482232fd885d3f13458085';
+const testPublicKey = '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798';
+const testSignature = '79224ea514206706298d8d620f660828f7987068d6d02757e6f3cbbf4a51ab133395db69db1bc9b2726dd99e34efc252d8258dcb003ebaba42be349f50f7765e';
 
 describe('PTE API tests', function () {
     it('Test /component', async function () {
@@ -57,6 +57,7 @@ describe('PTE API tests', function () {
 
     it('Test account creation', async function () {
         const manifest = new ManifestBuilder()
+            .callMethod("system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n", "lock_fee", ["Decimal(\"10\")"])
             .newAccount(testPublicKey)
             .build();
 

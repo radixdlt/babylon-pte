@@ -11,7 +11,7 @@ console.log("Account address: " + accountAddress);
 
 const componentAddress = '0276b537d9fc474d86edd48bfaa2843e87b48765767357ab9e403d';
 const manifest = new ManifestBuilder()
-  .withdrawFromAccountByAmount(accountAddress, 1, '030000000000000000000000000000000000000000000000000004')
+  .withdrawFromAccountByAmount(accountAddress, 1, 'resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag')
   .callMethod(componentAddress, 'buy_gumball', ['Decimal("1.0")'])
   .callMethodWithAllResources(accountAddress, 'deposit_batch')
   .build()

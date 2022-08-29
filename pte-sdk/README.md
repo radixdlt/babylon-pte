@@ -11,9 +11,9 @@ import { ManifestBuilder, DefaultApi } from "pte-sdk";
 const manifest = new ManifestBuilder()
     .callMethod('02e97040eb89efb88acc32577cecd380319c14777ea2aa98cddfad', 'withdraw_by_amount', [
         'Decimal("1")',
-        'ResourceAddress("030000000000000000000000000000000000000000000000000004")'
+        'ResourceAddress("resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag")'
     ])
-    .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd_bucket')
+    .takeFromWorktop('resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag', 'xrd_bucket')
     .callMethod('0290b7cbb58c5b43cf0e99534e8161bd7ce561c090adc0fdacac88', 'buy_gumball', [
         'Bucket("xrd_bucket")'
     ])

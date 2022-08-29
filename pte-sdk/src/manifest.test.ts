@@ -21,9 +21,9 @@ CALL_FUNCTION PackageAddress("01afd33a0aa465673a3ba9dc82444029620138a04f537d54f4
 CALL_METHOD ComponentAddress("0276ef419fc25b4b8bfd14c65bda76d15d73372693d3d9240de390") "buy_gumball" Bucket("bucket2");
 PUBLISH_PACKAGE Bytes("010203");`
 
-const expected_manifest_2 = `CALL_METHOD ComponentAddress("020000000000000000000000000000000000000000000000000002") "free_xrd" ;
-TAKE_FROM_WORKTOP ResourceAddress("030000000000000000000000000000000000000000000000000004") Bucket("xrd");
-CALL_FUNCTION PackageAddress("010000000000000000000000000000000000000000000000000003") "Account" "new_with_resource" Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("030000000000000000000000000000000000000000000000000005044083a64afb4b630ce7683674a6cdcebc7007aef7cb08f10b2cd491b6ce24ca1204f88bd2a2068e27591f1c5cfbd4fddf9a51f7b2360d784ee1e8fbec8f7476a6"))))) Bucket("xrd");`;
+const expected_manifest_2 = `CALL_METHOD ComponentAddress("system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n") "free_xrd" ;
+TAKE_FROM_WORKTOP ResourceAddress("resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag") Bucket("xrd");
+CALL_FUNCTION PackageAddress("package_sim1qyqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpsuluv44") "Account" "new_with_resource" Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("030000000000000000000000000000000000000000000000000005044083a64afb4b630ce7683674a6cdcebc7007aef7cb08f10b2cd491b6ce24ca1204f88bd2a2068e27591f1c5cfbd4fddf9a51f7b2360d784ee1e8fbec8f7476a6"))))) Bucket("xrd");`;
 
 describe('Manifest builder tests', function () {
     it('Test basic instructions', function () {

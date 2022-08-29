@@ -58,8 +58,8 @@ document.getElementById('instantiateComponent').onclick = async function () {
 document.getElementById('buyGumball').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
-    .withdrawFromAccountByAmount(accountAddress, 1, '030000000000000000000000000000000000000000000000000004')
-    .takeFromWorktop('030000000000000000000000000000000000000000000000000004', 'xrd')
+    .withdrawFromAccountByAmount(accountAddress, 1, 'resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag')
+    .takeFromWorktop('resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag', 'xrd')
     .callMethod(componentAddress, 'buy_gumball', ['Bucket("xrd")'])
     .callMethodWithAllResources(accountAddress, 'deposit_batch')
     .build()
