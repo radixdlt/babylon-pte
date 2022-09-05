@@ -16,14 +16,16 @@ document.getElementById('fetchAccountAddress').onclick = async function () {
 
 document.getElementById('publishPackage').onclick = async function () {
   // Load the wasm
-  const response = await fetch('./gumball_machine.wasm');
-  const wasm = new Uint8Array(await response.arrayBuffer());
+  const response = await fetch('./gumball_machine.rtm');
+  const buffer = new Uint8Array(await response.arrayBuffer());
 
   // Construct manifest
-  const manifest = new ManifestBuilder()
-    .publishPackage(wasm)
-    .build()
-    .toString();
+  // const manifest = new ManifestBuilder()
+  //   .callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'lock_fee', ['Decimal("100.0")'])
+  //   .publishPackage(wasm)
+  //   .build()
+  //   .toString();
+  const manifest = new TextDecoder("utf-8").decode(buffer);
 
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
@@ -37,6 +39,7 @@ document.getElementById('publishPackage').onclick = async function () {
 document.getElementById('instantiateComponent').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
+    .callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'lock_fee', ['Decimal("100.0")'])
     .callFunction(packageAddress, 'GumballMachine', 'instantiate_gumball_machine', ['Decimal("1.0")'])
     .build()
     .toString();
@@ -45,7 +48,7 @@ document.getElementById('instantiateComponent').onclick = async function () {
   const receipt = await signTransaction(manifest);
 
   // Update UI
-  if (receipt.status == 'Success') {
+  if (receipt.status == 'COMMIT_SUCCESS') {
     componentAddress = receipt.newComponents[0];
     resourceAddress = receipt.newResources[0];
     document.getElementById('componentAddress').innerText = componentAddress;
@@ -58,6 +61,7 @@ document.getElementById('instantiateComponent').onclick = async function () {
 document.getElementById('buyGumball').onclick = async function () {
   // Construct manifest
   const manifest = new ManifestBuilder()
+    .callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'lock_fee', ['Decimal("100.0")'])
     .withdrawFromAccountByAmount(accountAddress, 1, 'resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag')
     .takeFromWorktop('resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag', 'xrd')
     .callMethod(componentAddress, 'buy_gumball', ['Bucket("xrd")'])
