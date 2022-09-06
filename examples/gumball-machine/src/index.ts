@@ -1,5 +1,6 @@
 import { DefaultApi, ManifestBuilder } from 'pte-sdk';
 import { getAccountAddress, signTransaction } from 'pte-browser-extension-sdk';
+import init, { extract_package } from 'pte-manifest-compiler';
 
 // Global states
 let accountAddress = undefined; // User account address
@@ -15,17 +16,22 @@ document.getElementById('fetchAccountAddress').onclick = async function () {
 };
 
 document.getElementById('publishPackage').onclick = async function () {
-  // Load the wasm
   const response = await fetch('./gumball_machine.rtm');
   const buffer = new Uint8Array(await response.arrayBuffer());
+  const manifest = new TextDecoder("utf-8").decode(buffer);
 
-  // Construct manifest
+  // An alternative approach is to extract ABI from the code and build a manifest on the fly.
+  // This does not work without statically copying the compiler WASM file due to limitation
+  // of snowpack, see https://github.com/FredKSchott/snowpack/issues/3561
+  //
+  // await init();
+  // const package = extract_package(code_buffer);
+  // 
   // const manifest = new ManifestBuilder()
   //   .callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'lock_fee', ['Decimal("100.0")'])
-  //   .publishPackage(wasm)
+  //   .publishPackage(package)
   //   .build()
   //   .toString();
-  const manifest = new TextDecoder("utf-8").decode(buffer);
 
   // Send manifest to extension for signing
   const receipt = await signTransaction(manifest);
