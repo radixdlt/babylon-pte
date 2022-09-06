@@ -14,7 +14,7 @@ extern "C" {
 }
 
 // PTE v0.5 is not validating signatures. The methods below does not
-// generate a well-formed transaction for signing. 
+// generate a well-formed transaction for signing.
 // This is expectedly to be fixed by AlphaNet SDK.
 
 #[wasm_bindgen]
@@ -26,6 +26,13 @@ pub fn compile(manifest: &str) -> Result<Vec<u8>, String> {
     )
     .map_err(|e| format!("{:?}", e))?;
     Ok(scrypto::buffer::scrypto_encode(&transaction))
+}
+
+#[wasm_bindgen]
+pub fn extract_package(code: Vec<u8>) -> Result<Vec<u8>, String> {
+    utils::set_panic_hook();
+    let package = radix_engine::model::extract_package(code).map_err(|e| format!("{:?}", e))?;
+    Ok(scrypto::buffer::scrypto_encode(&package))
 }
 
 #[wasm_bindgen]
