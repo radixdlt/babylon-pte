@@ -356,7 +356,7 @@ export class ManifestBuilder {
      * @returns 
      */
     newAccount(publicKey: String): ManifestBuilder {
-        const auth = 'Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("03000000000000000000000000000000000000000000000000000002300721000000' + publicKey + '")))))';
+        const auth = 'Enum("Protected", Enum("ProofRule", Enum("Require", Enum("StaticNonFungible", NonFungibleAddress("000000000000000000000000000000000000000000000000000002300721000000' + publicKey + '")))))';
 
         return this.callMethod('system_sim1qsqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqs9fh54n', 'free_xrd', [])
             .takeFromWorktop('resource_sim1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzqu57yag', 'xrd')
